@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/*
+  Single source of design truth (see notes/topics/theory.md — "single source of design
+  truth"). Every color/font/radius/spacing value a direction uses should be a CSS custom
+  property defined here, not a hardcoded value in a component. The TweakBar reads/writes
+  these at runtime; "Copy CSS" exports the current values back into this shape so a tuning
+  session can be pasted back in permanently.
+*/
+:root {
+  /* color */
+  --color-bg: #0a0a0a;
+  --color-fg: #f5f5f5;
+  --color-accent: #ff4d4d;
+  --color-muted: #8a8a8a;
+
+  /* type */
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-scale: 1;
+
+  /* shape */
+  --radius: 8px;
+  --gap: 16px;
+
+  /* motion */
+  --motion-on: 1; /* 0 or 1, read by components to skip transitions */
+  --motion-duration: 1; /* multiplier */
+  --reveal-distance: 22px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-display);
+}
