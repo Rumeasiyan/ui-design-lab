@@ -7,7 +7,8 @@ rebuilding the harness each time.
 
 **Status:** functional (builds/lints clean), pre-1.0. Several pieces are unverified in a
 real browser or against real API docs — see `gh issue list --label unverified` in this
-repo, or [`AGENTS.md`](AGENTS.md) for the full picture. Contributor/agent conventions,
+repo, or [`AGENTS.md`](AGENTS.md) for the full picture. For a step-by-step walkthrough
+of running a design session, see [`USAGE.md`](USAGE.md). Contributor/agent conventions,
 constraints, and versioning policy live in [`AGENTS.md`](AGENTS.md); load-bearing design
 decisions and their reasoning are in [`DECISIONS.md`](DECISIONS.md).
 

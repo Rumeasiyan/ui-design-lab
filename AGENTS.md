@@ -28,6 +28,7 @@ image/video-gen tooling decisions.
 | `src/components/TweakBar.tsx` | Live token tuning UI; `FIELDS` list must match `tokens.css`. |
 | `scripts/imagegen.mjs` | Image generation via `codex exec` (ChatGPT Plus session, no API key). |
 | `scripts/videogen/index.mjs` + `providers/*.mjs` | Video generation dispatcher + per-provider HTTP calls. |
+| `USAGE.md` | Step-by-step walkthrough of running a design session (clone, tabs, tuning, generating assets). |
 | `gh issue list --label unverified` | Anything flagged as needing real-world verification before you trust it. |
 
 ## Working agreements
