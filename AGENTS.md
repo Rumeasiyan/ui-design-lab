@@ -26,6 +26,8 @@ image/video-gen tooling decisions.
 | `src/components/DirectionToggle.tsx` | Direction tab bar, number-key (1-9) and `G` grid-view shortcuts. |
 | `src/components/DeviceFrame.tsx` | Mobile/tablet/desktop preview frame widths. |
 | `src/components/TweakBar.tsx` | Live token tuning UI; `FIELDS` list must match `tokens.css`. |
+| `PROMPT_TEMPLATE.md` | Starting a design session — the Aesthetic/Reference/Intent/Guardrails pattern + worked example. |
+| `scripts/new-direction.mjs` | Scaffolding a new direction (folder + `Page.tsx` + registry entry) in one command. |
 | `scripts/imagegen.mjs` | Image generation via `codex exec` (ChatGPT Plus session, no API key). |
 | `scripts/videogen/index.mjs` + `providers/*.mjs` | Video generation dispatcher + per-provider HTTP calls. |
 | `USAGE.md` | Step-by-step walkthrough of running a design session (clone, tabs, tuning, generating assets). |

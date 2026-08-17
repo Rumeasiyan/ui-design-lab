@@ -38,6 +38,11 @@ glance, not tuning.
 
 ## 3. Prompting for a direction
 
+Start from **[`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md)** — the actual fill-in-the-blanks
+prompt pattern (Aesthetic/Reference/Intent/Guardrails) plus a full worked example, not
+just the rules below. It also covers turning a filled-in prompt into registered
+directions via `scripts/new-direction.mjs`.
+
 Each direction is a self-contained page. When prompting an AI agent (or building by
 hand) to create one, the two rules that make the harness work are:
 
@@ -56,23 +61,16 @@ to ship as-is.
 ## 4. Adding a new direction
 
 ```bash
-mkdir src/directions/v2
+node scripts/new-direction.mjs v2 --label "V2" --sub "Short description"
 ```
 
-Create `src/directions/v2/Page.tsx` (default-export a component, same pattern as `v1`).
-Register it in `src/lib/directions.ts`:
+Creates `src/directions/v2/Page.tsx` and registers it in `src/lib/directions.ts` in one
+step — it appears in the tab bar and grid view automatically, no manual wiring needed.
+Number-key shortcut defaults to the next unused digit (1-9); pass `--key` to override.
 
-```ts
-{
-  id: 'v2',
-  key: '2',           // number-key shortcut
-  label: 'V2',
-  sub: 'Short description',
-  component: lazy(() => import('../directions/v2/Page')),
-}
-```
-
-It appears in the tab bar and grid view automatically — no other wiring needed.
+Then fill in `Page.tsx` per your prompt's Aesthetic/Placement (see
+[`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md)), binding every visual value to a
+`var(--token-name)` from `tokens.css`.
 
 ## 5. Tuning by eye
 

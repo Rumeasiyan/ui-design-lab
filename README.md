@@ -8,7 +8,9 @@ rebuilding the harness each time.
 **Status:** functional (builds/lints clean), pre-1.0. Several pieces are unverified in a
 real browser or against real API docs — see `gh issue list --label unverified` in this
 repo, or [`AGENTS.md`](AGENTS.md) for the full picture. For a step-by-step walkthrough
-of running a design session, see [`USAGE.md`](USAGE.md). Contributor/agent conventions,
+of running a design session, see [`USAGE.md`](USAGE.md). To start a session, use
+[`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md) — the Aesthetic/Reference/Intent/Guardrails
+prompt pattern plus a worked example. Contributor/agent conventions,
 constraints, and versioning policy live in [`AGENTS.md`](AGENTS.md); load-bearing design
 decisions and their reasoning are in [`DECISIONS.md`](DECISIONS.md).
 
@@ -43,12 +45,14 @@ Other scripts: `pnpm build`, `pnpm lint`, `pnpm preview`.
 
 ## Adding a new direction
 
-1. `mkdir src/directions/v2 && touch src/directions/v2/Page.tsx` — build the page,
-   binding every visual value to a `var(--token-name)` from `tokens.css` (add new tokens
-   there and to `TweakBar.tsx`'s `FIELDS` list if you need new tunable knobs).
-2. Add an entry to `directions` in `src/lib/directions.ts`.
+1. `node scripts/new-direction.mjs v2 --label "V2" --sub "Short description"` — creates
+   `src/directions/v2/Page.tsx` and registers it in `src/lib/directions.ts` in one step.
+2. Fill in the page, binding every visual value to a `var(--token-name)` from
+   `tokens.css` (add new tokens there and to `TweakBar.tsx`'s `FIELDS` list if you need
+   new tunable knobs).
 3. Same intent/guardrails across all directions in a session; each direction fully
-   commits to its own aesthetic — never blend two directions in one component.
+   commits to its own aesthetic — never blend two directions in one component. See
+   [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md) for the prompt pattern to drive this.
 
 ## Image generation
 
