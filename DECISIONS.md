@@ -6,6 +6,29 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-08-17 — Switch to pnpm, retire HANDOFF.md in favor of issues
+
+**Decision:** Made the repo pnpm-only (`packageManager` field + `preinstall: npx
+only-allow pnpm` guard, deleted `package-lock.json`, added `pnpm-lock.yaml`). Converted
+`HANDOFF.md`'s open punch-list items into GitHub issues #1-5 and deleted the file.
+Rewrote `README.md` to be accurate against current repo state and point at `AGENTS.md`/
+issues instead of duplicating HANDOFF-style status.
+
+**Why:** User preference for pnpm. `HANDOFF.md` was a point-in-time handoff note from
+the scaffolding session — once a real issue tracker existed (see prior decision below),
+keeping a second, manually-maintained open-items doc in parallel with issues would drift
+out of sync with one of them silently. One source of truth for open work (issues) beats
+two.
+
+**Consequences:** Anyone reading old commit `eab4902`/`dc46c6f` history will still see
+`HANDOFF.md` referenced — that's fine, it's a historical record. Going forward, open
+work items are only in `gh issue list`, not in a repo file. `npm install` /
+`yarn install` now hard-fail via the preinstall guard — contributors must have pnpm.
+
+**Refs:** `package.json`, `pnpm-lock.yaml`, issues #1-#5, `README.md`, `AGENTS.md`.
+
+---
+
 ## 2026-08-17 — Repo published, issues adopted as task tracker
 
 **Decision:** Pushed repo to `github.com/Rumeasiyan/design-template`, adopted GitHub

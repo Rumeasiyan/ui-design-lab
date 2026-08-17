@@ -1,8 +1,7 @@
 # AGENTS.md
 
 Working reference for AI agents (and new humans) in this repo. Read this before making
-changes. `HANDOFF.md` is a separate, point-in-time punch list of unfinished work from the
-scaffolding session — read it too, but this file is the durable one.
+changes. Open work items live as GitHub issues (`gh issue list`), not in a doc.
 
 ## What this project is
 
@@ -29,7 +28,7 @@ image/video-gen tooling decisions.
 | `src/components/TweakBar.tsx` | Live token tuning UI; `FIELDS` list must match `tokens.css`. |
 | `scripts/imagegen.mjs` | Image generation via `codex exec` (ChatGPT Plus session, no API key). |
 | `scripts/videogen/index.mjs` + `providers/*.mjs` | Video generation dispatcher + per-provider HTTP calls. |
-| `HANDOFF.md` | Current unverified/unfinished-work punch list — check before assuming something works. |
+| `gh issue list --label unverified` | Anything flagged as needing real-world verification before you trust it. |
 
 ## Working agreements
 
@@ -47,8 +46,8 @@ image/video-gen tooling decisions.
     `harness` (core scaffold), `video-provider` (touches the unverified paid providers),
     `unverified` (needs real browser/API verification before trusted).
 - Anything a future reader would need — an open question, a deferred fix, a discovered
-  bug, a risky assumption — becomes an issue (or a `HANDOFF.md`/decision-log entry for
-  broader context) at the moment it's found, not left only in conversation.
+  bug, a risky assumption — becomes an issue (or a `DECISIONS.md` entry for a resolved
+  decision) at the moment it's found, not left only in conversation.
 - Branch policy: commit directly to `master`. Solo repo, no PR review process — feature
   branches would just be ceremony.
 
@@ -68,18 +67,18 @@ image/video-gen tooling decisions.
 - **The three paid video providers (`replicate.mjs`, `openrouter.mjs`,
   `atlascloud.mjs`) are unverified guesses**, written from search-result summaries, not
   each provider's real API reference. Don't trust their request/response shapes without
-  checking live docs first (`HANDOFF.md` has the doc links).
+  checking live docs first — issue #3 has the doc links.
 - **`.env` is gitignored; never commit real API keys.** `.env.example` documents the
   shape only.
 
 ## Commands
 
 ```bash
-npm install       # install deps
-npm run dev       # vite dev server
-npm run build     # tsc -b && vite build
-npm run lint      # oxlint (rules: react/rules-of-hooks=error, react/only-export-components=warn)
-npm run preview   # preview a production build
+pnpm install      # install deps (npm/yarn blocked by preinstall guard — pnpm only)
+pnpm dev          # vite dev server
+pnpm build        # tsc -b && vite build
+pnpm lint         # oxlint (rules: react/rules-of-hooks=error, react/only-export-components=warn)
+pnpm preview      # preview a production build
 ```
 
 No test suite exists yet.
@@ -98,8 +97,8 @@ No test suite exists yet.
 
 - Canonical source: `package.json` `version` field. No separate build number (this is a
   web app served/built via Vite, not a platform with its own build-number concept).
-- Current version: `0.1.0` (bumped from `0.0.0` — pre-1.0, template is still stabilizing
-  per `HANDOFF.md`'s open punch list).
+- Current version: `0.2.0` (pre-1.0, template still stabilizing — see open `unverified`
+  issues).
 - Update **per completed change** (not batched at release time), per semver:
   - Breaking change to the harness (e.g. token-shape change that breaks existing
     directions) → bump `MINOR` while pre-1.0 (see note below), reset `PATCH`.
@@ -110,16 +109,16 @@ No test suite exists yet.
   - Docs, comments, formatting, refactor with no user-visible behavior change → no
     version bump.
   - **Pre-1.0 note:** per semver, `0.x` releases may include breaking changes in `MINOR`
-    bumps. Once the harness is verified end-to-end (`HANDOFF.md` list cleared), cut
-    `1.0.0` and switch to standard `MAJOR`-for-breaking rules.
+    bumps. Once the harness is verified end-to-end (all `unverified`-labeled issues
+    closed), cut `1.0.0` and switch to standard `MAJOR`-for-breaking rules.
 - No build-only artifacts are distributed from this repo (it's cloned, not published), so
   there's no build-number increment step.
 - Log every version-affecting change in `CHANGELOG.md`.
 
 ## Workflow
 
-1. Check `HANDOFF.md` and open GitHub issues (`gh issue list`) before starting; check
-   this file's Constraints section for anything the change touches.
+1. Check open GitHub issues (`gh issue list`) before starting; check this file's
+   Constraints section for anything the change touches.
 2. If non-trivial, open an issue (or confirm one already exists) before starting.
 3. Make the change.
 4. Determine whether it needs a version bump (see Versioning above); if so, update
@@ -127,7 +126,6 @@ No test suite exists yet.
 5. If the change is a decision worth remembering later ("why is it like this?") —
    architecture choice, rejected alternative, resolved open question — add an entry to
    `DECISIONS.md`.
-6. If the change resolves or adds an item to `HANDOFF.md`'s punch list, update that list.
-7. Run `npm run build` and `npm run lint`; fix failures.
-8. Commit directly to `master` referencing the issue number if one exists; comment the
+6. Run `pnpm build` and `pnpm lint`; fix failures.
+7. Commit directly to `master` referencing the issue number if one exists; comment the
    outcome on the issue and close it.
