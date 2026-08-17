@@ -33,14 +33,24 @@ image/video-gen tooling decisions.
 
 ## Working agreements
 
-- No issue tracker configured (no git remote, no `gh`/`glab` CLI available). Work is
-  tracked in this file, `HANDOFF.md`, and the decision log below — not in an external
-  tracker. If a remote + tracker gets added later, revisit this section.
+- Repo: `github.com/Rumeasiyan/design-template`. `gh` CLI is authenticated as
+  `Rumeasiyan`. Issues are used as a task tracker: open one before starting non-trivial
+  work, assign to `Rumeasiyan` (solo repo — no one else to assign to), work, commit
+  referencing the issue number, comment the outcome, close.
+  - Closing comment states: what was built, what was verified, the resulting
+    `package.json` version if it changed, and anything deliberately deferred (link the
+    follow-up issue).
+  - Skip an issue for trivial fixes with no ambiguity — typo, formatting, a one-line
+    obviously-correct change. If you're explaining "why" to a future reader, it's not
+    trivial.
+  - Template: `.github/ISSUE_TEMPLATE/task.md`. Labels beyond GitHub's defaults:
+    `harness` (core scaffold), `video-provider` (touches the unverified paid providers),
+    `unverified` (needs real browser/API verification before trusted).
 - Anything a future reader would need — an open question, a deferred fix, a discovered
-  bug, a risky assumption — goes into `HANDOFF.md`'s punch list or a new decision-log
-  entry at the moment it's found, not left only in conversation.
-- Branch policy: commit directly to `master`. No remote, no PR host — feature branches
-  would just be local ceremony.
+  bug, a risky assumption — becomes an issue (or a `HANDOFF.md`/decision-log entry for
+  broader context) at the moment it's found, not left only in conversation.
+- Branch policy: commit directly to `master`. Solo repo, no PR review process — feature
+  branches would just be ceremony.
 
 ## Constraints
 
@@ -108,14 +118,16 @@ No test suite exists yet.
 
 ## Workflow
 
-1. Check `HANDOFF.md` for open items before starting; check this file's Constraints
-   section for anything the change touches.
-2. Make the change.
-3. Determine whether it needs a version bump (see Versioning above); if so, update
+1. Check `HANDOFF.md` and open GitHub issues (`gh issue list`) before starting; check
+   this file's Constraints section for anything the change touches.
+2. If non-trivial, open an issue (or confirm one already exists) before starting.
+3. Make the change.
+4. Determine whether it needs a version bump (see Versioning above); if so, update
    `package.json` and add a `CHANGELOG.md` entry.
-4. If the change is a decision worth remembering later ("why is it like this?") —
+5. If the change is a decision worth remembering later ("why is it like this?") —
    architecture choice, rejected alternative, resolved open question — add an entry to
    `DECISIONS.md`.
-5. If the change resolves or adds an item to `HANDOFF.md`'s punch list, update that list.
-6. Run `npm run build` and `npm run lint`; fix failures.
-7. Commit directly to `master` with a clear message.
+6. If the change resolves or adds an item to `HANDOFF.md`'s punch list, update that list.
+7. Run `npm run build` and `npm run lint`; fix failures.
+8. Commit directly to `master` referencing the issue number if one exists; comment the
+   outcome on the issue and close it.

@@ -6,6 +6,27 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-08-17 — Repo published, issues adopted as task tracker
+
+**Decision:** Pushed repo to `github.com/Rumeasiyan/design-template`, adopted GitHub
+issues as a task tracker (open before work, close on completion), added 3 labels
+(`harness`, `video-provider`, `unverified`) beyond GitHub's defaults, added a task issue
+template with a safety/compliance checklist.
+
+**Why:** The earlier same-day decision to skip a tracker was conditional on no remote
+existing yet ("Repo published..." decision below supersedes that condition once the
+remote landed). Solo repo, so issues assign to `Rumeasiyan` by default rather than
+requiring an assignment discussion per issue.
+
+**Consequences:** `AGENTS.md`'s Working Agreements and Workflow sections now reference
+issue numbers in commits/closes. `HANDOFF.md`'s punch list stays as-is (broader,
+document-level) rather than being split into issues retroactively — new work items go to
+issues going forward.
+
+**Refs:** `AGENTS.md`, `.github/ISSUE_TEMPLATE/task.md`.
+
+---
+
 ## 2026-08-17 — Agent docs, versioning, no tracker
 
 **Decision:** Add `AGENTS.md` (+ `CLAUDE.md` shim) as the single source of agent-facing
