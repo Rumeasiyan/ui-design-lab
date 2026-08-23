@@ -79,7 +79,9 @@ writeFileSync(
       </h1>
       <p style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-mono)' }}>
         Fill in from your prompt's Aesthetic/Placement (see PROMPT_TEMPLATE.md). Bind every
-        color/font/radius to the CSS custom properties in src/tokens.css.
+        color/font/radius to the CSS custom properties in src/tokens.css. If this design
+        needs an image, generate a real one with scripts/imagegen.mjs before shipping —
+        never leave a placeholder image/icon/stock photo in.
       </p>
     </div>
   )

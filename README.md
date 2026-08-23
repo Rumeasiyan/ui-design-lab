@@ -64,6 +64,11 @@ Wraps `codex exec`'s built-in image tool — billed against your existing ChatGP
 subscription, no separate API key. Requires the `codex` CLI installed and logged in
 (`codex login`). **Unverified end-to-end** — see open issue #2.
 
+**Never ship a direction with placeholder images, icons, or stock art.** If a design
+calls for an image, generate a real one with this script before calling the direction
+done — a placeholder can't be judged for aesthetic feel, which defeats the point of a
+visual direction review.
+
 ## Video generation
 
 ```bash

@@ -54,6 +54,10 @@ hand) to create one, the two rules that make the harness work are:
 2. **Each direction commits fully to one aesthetic.** Don't blend two visual languages
    in a single `Page.tsx` — the whole point of side-by-side comparison is that each tab
    is a distinct, coherent bet.
+3. **Never use placeholder images, icons, or stock art.** If the design calls for an
+   image, generate a real one first (see "Generating supporting assets" below) — a gray
+   box or stock photo can't be judged for feel, which is the whole point of reviewing a
+   direction.
 
 `src/directions/v1/Page.tsx` is the placeholder — replace its contents, it's not meant
 to ship as-is.
@@ -87,9 +91,13 @@ With a direction open (not grid view):
 
 ## 6. Generating supporting assets
 
-Image and video generation are optional, invoked from the CLI, not the browser UI —
-see `README.md`'s "Image generation" / "Video generation" sections for commands and
-current verification status.
+Image and video generation are invoked from the CLI, not the browser UI — see
+`README.md`'s "Image generation" / "Video generation" sections for commands and current
+verification status. **Images are not optional if a direction's design calls for one —
+generate a real image via `scripts/imagegen.mjs` (wraps `codex exec`'s image tool, no
+separate API key needed) rather than leaving a placeholder.** Video generation defaults
+to `manual` mode (no API call) and stays optional/opt-in per the constraint in
+`AGENTS.md`.
 
 ## 7. Wrapping up a session
 

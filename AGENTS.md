@@ -64,6 +64,12 @@ image/video-gen tooling decisions.
   component.** Why: the point of the harness is side-by-side comparison of distinct
   directions — blending defeats that. Enforced by convention (`src/lib/directions.ts`
   comment, `README.md`).
+- **Never use placeholder images/icons/stock art in a direction.** If a direction's
+  design calls for an image, generate a real one with `scripts/imagegen.mjs` (wraps
+  `codex exec`'s image tool, billed against the ChatGPT Plus session) before calling the
+  direction done. Why: a gray box or stock photo can't be judged for aesthetic feel —
+  it defeats the point of a visual direction review. Enforced by convention only — check
+  by eye when reviewing a direction.
 - **`VIDEO_GEN_PROVIDER` defaults to `manual` (no API call, no cost).** Why: explicit
   user decision — pay-per-use video APIs are opt-in per project, not on by default. Do
   not change the default. See `scripts/videogen/providers/manual.mjs`.
