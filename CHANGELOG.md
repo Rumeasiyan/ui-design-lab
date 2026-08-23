@@ -3,6 +3,14 @@
 Format: version, date, then what changed and why (link a `DECISIONS.md` entry when one
 exists). Newest first.
 
+## 0.3.0 — 2026-08-17
+
+- Added multi-screen support per direction (`Direction.screens: Screen[]`, breaking
+  change to `src/lib/directions.ts`'s shape), `ScreenNav` component, and
+  `scripts/new-screen.mjs`. Added a filter input to `DirectionToggle`'s tab bar (shown
+  past 6 directions). See `DECISIONS.md` 2026-08-17 "Multi-screen directions + direction
+  filter", issue #7.
+
 ## 0.2.1 — 2026-08-17
 
 - Added a hard "never use placeholder images/assets" constraint (generate real ones via

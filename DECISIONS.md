@@ -6,6 +6,32 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-08-17 — Multi-screen directions + direction filter
+
+**Decision:** Changed `Direction` in `src/lib/directions.ts` from a single `component`
+to a `screens: Screen[]` array (breaking change to the registry shape). Added
+`ScreenNav` (shown when a direction has >1 screen), a filter input in `DirectionToggle`
+(shown once there are >6 directions), and `scripts/new-screen.mjs` to scaffold
+additional screens, mirroring `scripts/new-direction.mjs`.
+
+**Why:** User question — the harness only supported one screen per direction (a landing
+page), with no way to preview a multi-screen flow (onboarding, a dashboard with
+sub-pages) or to navigate a large number of directions once the tab bar gets crowded.
+Kept dependency-free (no router library) since this is a preview/comparison harness, not
+a shipped app — screen switching is local `useState` in `App.tsx`, not URL-addressable.
+
+**Consequences:** `v1`'s single screen is now `screens: [{ id: 'home', ... }]` instead of
+a bare `component` — any direction created before this change needs its registry entry
+updated to the new shape (only `v1` existed, already migrated). Number-key shortcuts
+(1-9) still address *directions* only, not screens — with more than 9 directions some
+won't have a shortcut, which was already true before this change (see
+`scripts/new-direction.mjs`'s existing error for "no unused key left").
+
+**Refs:** `src/lib/directions.ts`, `src/App.tsx`, `src/components/{DirectionToggle,ScreenNav}.tsx`,
+`scripts/{new-direction,new-screen}.mjs`, issue #7.
+
+---
+
 ## 2026-08-17 — No placeholder images/assets in directions
 
 **Decision:** Added a hard constraint: a direction never ships with a placeholder

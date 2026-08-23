@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 /*
-  Scaffolds a new direction: creates src/directions/<id>/Page.tsx and registers it in
-  src/lib/directions.ts, so adding a direction is one command instead of the manual
-  mkdir + touch + hand-edit-the-registry flow described in USAGE.md section 4.
+  Scaffolds a new direction: creates src/directions/<id>/Page.tsx (registered as its
+  "home" screen) and registers the direction in src/lib/directions.ts, so adding a
+  direction is one command instead of the manual mkdir + touch + hand-edit-the-registry
+  flow described in USAGE.md section 4. To add more screens to a direction afterward,
+  use scripts/new-screen.mjs.
 
   Usage:
     node scripts/new-direction.mjs <id> --label "V2" --sub "Short description" [--key 2]
@@ -101,7 +103,9 @@ const entry = `  {
     key: '${key}',
     label: '${label}',
     sub: '${sub}',
-    component: lazy(() => import('../directions/${id}/Page')),
+    screens: [
+      { id: 'home', label: 'Home', component: lazy(() => import('../directions/${id}/Page')) },
+    ],
   },
 `
 

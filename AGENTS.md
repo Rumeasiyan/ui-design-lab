@@ -21,13 +21,16 @@ image/video-gen tooling decisions.
 | Area | When you need it |
 |---|---|
 | `src/tokens.css` | Any visual value — colors, fonts, radius, gap, motion. Single source of design truth. |
-| `src/directions/<id>/Page.tsx` | Adding/editing an aesthetic direction. |
-| `src/lib/directions.ts` | Registering a new direction (id, number-key shortcut, lazy import). |
-| `src/components/DirectionToggle.tsx` | Direction tab bar, number-key (1-9) and `G` grid-view shortcuts. |
+| `src/directions/<id>/Page.tsx` | A direction's default ("home") screen. |
+| `src/directions/<id>/screens/<screenId>.tsx` | Additional screens within a direction. |
+| `src/lib/directions.ts` | Registering a direction and its `screens` array (id, number-key shortcut, lazy imports). |
+| `src/components/DirectionToggle.tsx` | Direction tab bar; number-key (1-9) and `G` grid-view shortcuts; filter input once there are >6 directions. |
+| `src/components/ScreenNav.tsx` | Secondary nav bar for a direction's screens (only renders when a direction has >1 screen). |
 | `src/components/DeviceFrame.tsx` | Mobile/tablet/desktop preview frame widths. |
 | `src/components/TweakBar.tsx` | Live token tuning UI; `FIELDS` list must match `tokens.css`. |
 | `PROMPT_TEMPLATE.md` | Starting a design session — the Aesthetic/Reference/Intent/Guardrails pattern + worked example. |
-| `scripts/new-direction.mjs` | Scaffolding a new direction (folder + `Page.tsx` + registry entry) in one command. |
+| `scripts/new-direction.mjs` | Scaffolding a new direction (folder + `Page.tsx` "home" screen + registry entry) in one command. |
+| `scripts/new-screen.mjs` | Scaffolding an additional screen into an existing direction. |
 | `scripts/imagegen.mjs` | Image generation via `codex exec` (ChatGPT Plus session, no API key). |
 | `scripts/videogen/index.mjs` + `providers/*.mjs` | Video generation dispatcher + per-provider HTTP calls. |
 | `USAGE.md` | Step-by-step walkthrough of running a design session (clone, tabs, tuning, generating assets). |
@@ -95,8 +98,11 @@ No test suite exists yet.
 ## Conventions
 
 - TypeScript + React function components, one direction per folder under
-  `src/directions/<id>/Page.tsx`, lazy-loaded via `React.lazy` in
-  `src/lib/directions.ts`.
+  `src/directions/<id>/`. A direction has one or more screens (`Screen[]` in
+  `src/lib/directions.ts`), each lazy-loaded via `React.lazy`; `screens[0]` is
+  conventionally `Page.tsx`, additional screens live under `screens/<screenId>.tsx`.
+- Number-key shortcuts (1-9) select a *direction*, not a screen — a direction's screens
+  are navigated via `ScreenNav`, which only renders when it has more than one.
 - New tunable design values go in **both** `src/tokens.css` (as a custom property) and
   `TweakBar.tsx`'s `FIELDS` list — adding to only one breaks the tuning UI or the export.
 - No commits yet, so no established commit-message style to follow. Use clear, imperative
@@ -106,7 +112,7 @@ No test suite exists yet.
 
 - Canonical source: `package.json` `version` field. No separate build number (this is a
   web app served/built via Vite, not a platform with its own build-number concept).
-- Current version: `0.2.0` (pre-1.0, template still stabilizing — see open `unverified`
+- Current version: `0.3.0` (pre-1.0, template still stabilizing — see open `unverified`
   issues).
 - Update **per completed change** (not batched at release time), per semver:
   - Breaking change to the harness (e.g. token-shape change that breaks existing

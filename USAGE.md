@@ -23,10 +23,15 @@ The app (`src/App.tsx`) is one screen with three parts:
 
 - **Top tab bar** (`DirectionToggle`) — one tab per registered direction. Click a tab,
   or press its number key (`1`-`9`), to view that direction full-screen. Press `G` (or
-  click "All N") to switch to a grid showing every direction at once, side-by-side.
-- **Center pane** (`DeviceFrame`) — renders the active direction's `Page.tsx` inside a
-  frame at mobile (390px), tablet (834px), or desktop (100%) width. Switch width with
-  the mobile/tablet/desktop buttons top-right.
+  click "All N") to switch to a grid showing every direction at once, side-by-side. Once
+  there are more than 6 directions, a filter input appears — type to narrow the tabs
+  shown by label/subtitle (shortcuts still work on the full, unfiltered set).
+- **Screen nav** (`ScreenNav`) — a second bar under the direction tab bar, shown only
+  when the active direction has more than one screen. Click a screen name to switch to
+  it; switching direction always resets to that direction's first screen.
+- **Center pane** (`DeviceFrame`) — renders the active screen inside a frame at mobile
+  (390px), tablet (834px), or desktop (100%) width. Switch width with the mobile/tablet/
+  desktop buttons top-right.
 - **Right sidebar** (`TweakBar`) — sliders/toggles for the tunable CSS custom
   properties in `src/tokens.css`: radius, gap, font scale, motion on/off, motion
   duration, reveal distance. These edit the live `:root` styles in the browser, so
@@ -68,13 +73,29 @@ to ship as-is.
 node scripts/new-direction.mjs v2 --label "V2" --sub "Short description"
 ```
 
-Creates `src/directions/v2/Page.tsx` and registers it in `src/lib/directions.ts` in one
-step — it appears in the tab bar and grid view automatically, no manual wiring needed.
-Number-key shortcut defaults to the next unused digit (1-9); pass `--key` to override.
+Creates `src/directions/v2/Page.tsx` (registered as that direction's default "home"
+screen) and registers the direction in `src/lib/directions.ts` in one step — it appears
+in the tab bar and grid view automatically, no manual wiring needed. Number-key
+shortcut defaults to the next unused digit (1-9); pass `--key` to override.
 
 Then fill in `Page.tsx` per your prompt's Aesthetic/Placement (see
 [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md)), binding every visual value to a
 `var(--token-name)` from `tokens.css`.
+
+## 4a. Adding a screen to a direction
+
+If a direction is more than one view (e.g. a flow: Home → Detail → Settings), add
+screens beyond the default one:
+
+```bash
+node scripts/new-screen.mjs v2 detail --label "Detail"
+```
+
+Creates `src/directions/v2/screens/detail.tsx` and appends it to `v2`'s `screens` array
+in `src/lib/directions.ts`. As soon as a direction has 2+ screens, `ScreenNav` appears
+under the tab bar to switch between them (see section 2). There's no routing/URL per
+screen — it's local component state in `App.tsx`, reset to the first screen whenever you
+switch directions.
 
 ## 5. Tuning by eye
 

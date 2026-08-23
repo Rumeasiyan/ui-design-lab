@@ -34,11 +34,15 @@ Other scripts: `pnpm build`, `pnpm lint`, `pnpm preview`.
 - **`src/tokens.css`** — single source of design truth. Every color/font/radius/spacing
   a direction uses should be a CSS custom property here, not a hardcoded value in a
   component.
-- **`src/directions/`** — one folder per aesthetic direction (`v1/`, `v2/`, ...), each a
-  full page component committed to its own aesthetic. Register new ones in
+- **`src/directions/`** — one folder per aesthetic direction (`v1/`, `v2/`, ...), each
+  committed to its own aesthetic and made up of one or more **screens** (`Page.tsx` as
+  the default, more under `screens/<screenId>.tsx`). Register new ones in
   `src/lib/directions.ts`.
 - **`src/components/DirectionToggle.tsx`** — tab bar to switch/compare directions live.
   Number keys 1-9 jump directly to a direction, `G` toggles the all-directions grid view.
+  A filter input appears once there are more directions than fit comfortably (>6).
+- **`src/components/ScreenNav.tsx`** — secondary nav bar for switching between a
+  direction's screens; only shows up when a direction has more than one.
 - **`src/components/DeviceFrame.tsx`** — mobile/tablet/desktop preview frames.
 - **`src/components/TweakBar.tsx`** — live-adjust tokens (radius, gap, font scale,
   motion) by eye; "Copy CSS" exports the current values back into `tokens.css` shape.
@@ -46,13 +50,27 @@ Other scripts: `pnpm build`, `pnpm lint`, `pnpm preview`.
 ## Adding a new direction
 
 1. `node scripts/new-direction.mjs v2 --label "V2" --sub "Short description"` — creates
-   `src/directions/v2/Page.tsx` and registers it in `src/lib/directions.ts` in one step.
+   `src/directions/v2/Page.tsx` as the direction's default screen and registers it in
+   `src/lib/directions.ts` in one step.
 2. Fill in the page, binding every visual value to a `var(--token-name)` from
    `tokens.css` (add new tokens there and to `TweakBar.tsx`'s `FIELDS` list if you need
    new tunable knobs).
 3. Same intent/guardrails across all directions in a session; each direction fully
    commits to its own aesthetic — never blend two directions in one component. See
    [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md) for the prompt pattern to drive this.
+
+## Adding a screen to a direction
+
+For a direction with more than one screen (e.g. a flow: Home → Detail → Settings):
+
+```bash
+node scripts/new-screen.mjs v2 detail --label "Detail"
+```
+
+Creates `src/directions/v2/screens/detail.tsx` and appends it to that direction's
+`screens` array in `src/lib/directions.ts`. Once a direction has 2+ screens, a
+`ScreenNav` bar appears under the direction tab bar to switch between them — number-key
+shortcuts still select *directions*, not screens.
 
 ## Image generation
 
