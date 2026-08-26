@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
   apply instantly to whichever direction is showing (see src/tokens.css). "Copy CSS" exports
   the current values as a :root block you can paste back into tokens.css to make a tuning
   session permanent. Add a field here for every token you want tunable by eye instead of by
-  re-prompting — see notes/topics/workflow.md "live tuning loop".
+  re-prompting.
 */
 
 type FieldType = 'toggle' | 'slider'

@@ -11,10 +11,10 @@ device-size preview frames, and scripted image/video generation. It is not itsel
 client project — it's the harness other projects get built inside of. Stack: Vite +
 React 19 + TypeScript + Tailwind v4 (`@tailwindcss/vite`).
 
-Background/research trail lives outside this repo, in a separate personal-planning repo:
-`~/external/life-os/goal-faceless-uiux-influencer/notes/`, particularly
-`2026-08-17-ai-design-workflow-video.md` (original spec) and same-day follow-ups on
-image/video-gen tooling decisions.
+The original spec and the research trail behind the image/video-gen tooling choices live
+in the maintainer's private planning notes, outside this repo. Everything load-bearing
+that came out of them is recorded in `DECISIONS.md` — read that rather than hunting for
+the notes.
 
 ## Where to look
 

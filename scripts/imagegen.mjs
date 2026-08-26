@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 /*
-  Wraps `codex exec`'s built-in image_gen tool (billed against your existing ChatGPT Plus
-  session, no separate API key — see notes/2026-08-17-cli-subscription-image-gen.md in the
-  goal-faceless-uiux-influencer repo for the research trail behind this choice).
+  Wraps `codex exec`'s built-in image_gen tool — billed against your existing ChatGPT Plus
+  session, no separate API key. See DECISIONS.md for why this over a paid image API.
 
   Usage:
     node scripts/imagegen.mjs "prompt text" [output/path.png]

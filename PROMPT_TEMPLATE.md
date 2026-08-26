@@ -1,8 +1,7 @@
 # Prompt template — starting a design session
 
 Copy the template below, fill in the four fields, hand it to an AI coding agent working
-in this repo (or use it as your own brief). Source: original research video, transcribed
-in `~/external/life-os/goal-faceless-uiux-influencer/notes/2026-08-17-ai-design-workflow-video.md`.
+in this repo (or use it as your own brief).
 
 ## The pattern
 

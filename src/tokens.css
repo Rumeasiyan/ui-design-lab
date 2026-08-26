@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 /*
-  Single source of design truth (see notes/topics/theory.md — "single source of design
-  truth"). Every color/font/radius/spacing value a direction uses should be a CSS custom
-  property defined here, not a hardcoded value in a component. The TweakBar reads/writes
+  Single source of design truth. Every color/font/radius/spacing value a direction
+  uses should be a CSS custom property defined here, not a hardcoded value in a component. The TweakBar reads/writes
   these at runtime; "Copy CSS" exports the current values back into this shape so a tuning
   session can be pasted back in permanently.
 */
