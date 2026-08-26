@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Usage walkthrough
+    url: https://github.com/Rumeasiyan/ui-design-lab/blob/master/USAGE.md
+    about: Step-by-step guide to running a design session before filing an issue.
+  - name: Contributor conventions & constraints
+    url: https://github.com/Rumeasiyan/ui-design-lab/blob/master/AGENTS.md
+    about: The working agreements and hard rules for changing this repo.
+  - name: Report a security vulnerability
+    url: https://github.com/Rumeasiyan/ui-design-lab/security/advisories/new
+    about: Do not open a public issue for security problems.

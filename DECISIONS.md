@@ -6,6 +6,37 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-08-26 — Renamed to `ui-design-lab`, went public under MIT
+
+**Decision:** Renamed the repo, the local working folder, and the package from
+`design-template` to `ui-design-lab`; licensed it MIT; added the standard open-source
+community files (`CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, bug/feature
+issue templates, PR template); added a CI workflow running `pnpm lint` + `pnpm build`;
+rewrote `README.md` around search and answer-engine discoverability; then flipped
+visibility from private to public.
+
+**Why:** `design-template` described the repo's *role in one person's workflow* (a thing
+you clone), not *what it is* — it carried none of the terms someone would search for and
+would be invisible on GitHub. `ui-design-lab` puts the actual subject in the name.
+MIT over Apache-2.0 for the shortest, most recognized license for a scaffold people copy
+rather than depend on. Community files and a green CI badge are what a stranger checks
+before trusting an unknown repo; landing public without them reads as abandoned.
+
+**Rejected alternatives:** `ai-design-directions` and `design-directions-kit` (more
+precise, but "design directions" is a term of art with far less search volume than
+"ui design"); `vibe-design-kit` (rides current trend traffic, ages badly); staying
+private (defeats the point).
+
+**Consequences:** `package.json` keeps `"private": true` despite the repo being public —
+this is cloned, never `npm publish`ed, and the flag guards against an accidental publish.
+The README now doubles as the marketing surface, so it has to stay honest about what is
+unverified. Outside PRs are now possible, so `master` gets CI gating even though the
+maintainer still commits directly.
+
+**Refs:** issue #8, `README.md`, `LICENSE`, `CONTRIBUTING.md`, `.github/workflows/ci.yml`.
+
+---
+
 ## 2026-08-17 — Multi-screen directions + direction filter
 
 **Decision:** Changed `Direction` in `src/lib/directions.ts` from a single `component`
@@ -77,7 +108,7 @@ work items are only in `gh issue list`, not in a repo file. `npm install` /
 
 ## 2026-08-17 — Repo published, issues adopted as task tracker
 
-**Decision:** Pushed repo to `github.com/Rumeasiyan/design-template`, adopted GitHub
+**Decision:** Pushed repo to `github.com/Rumeasiyan/ui-design-lab`, adopted GitHub
 issues as a task tracker (open before work, close on completion), added 3 labels
 (`harness`, `video-provider`, `unverified`) beyond GitHub's defaults, added a task issue
 template with a safety/compliance checklist.

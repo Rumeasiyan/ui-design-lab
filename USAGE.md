@@ -8,7 +8,7 @@ structure/conventions see `README.md`; for contributor rules see `AGENTS.md`.
 This repo is meant to be cloned per project, not built on top of directly.
 
 ```bash
-git clone https://github.com/Rumeasiyan/design-template.git my-project
+git clone https://github.com/Rumeasiyan/ui-design-lab.git my-project
 cd my-project
 rm -rf .git && git init   # detach from this repo's history
 pnpm install

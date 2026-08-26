@@ -3,6 +3,16 @@
 Format: version, date, then what changed and why (link a `DECISIONS.md` entry when one
 exists). Newest first.
 
+## 0.4.0 — 2026-08-26
+
+- Renamed `design-template` -> `ui-design-lab` (repo, package name, docs). Open-sourced
+  under MIT: added `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`,
+  bug/feature issue templates, PR template, and a CI workflow (`pnpm lint` + `pnpm
+  build` on push/PR to `master`). Rewrote `README.md` for search/answer-engine
+  discoverability (keyword-led intro, feature table, FAQ, doc map). Replaced the default
+  Vite favicon and page title (closes #4). See `DECISIONS.md` 2026-08-26 "Renamed to
+  `ui-design-lab`, went public under MIT", issue #8.
+
 ## 0.3.0 — 2026-08-17
 
 - Added multi-screen support per direction (`Direction.screens: Screen[]`, breaking

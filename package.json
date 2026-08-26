@@ -1,7 +1,34 @@
 {
-  "name": "design-template",
+  "name": "ui-design-lab",
+  "version": "0.4.0",
   "private": true,
-  "version": "0.3.0",
+  "description": "Compare multiple UI design directions side by side with live design-token tuning, device preview frames, and scripted AI image/video generation. A Vite + React 19 + Tailwind v4 template for AI-assisted UI/UX design sessions.",
+  "keywords": [
+    "ui-design",
+    "ux-design",
+    "design-system",
+    "design-tokens",
+    "design-directions",
+    "ai-design",
+    "vibe-coding",
+    "react",
+    "vite",
+    "tailwindcss",
+    "typescript",
+    "design-playground",
+    "ui-prototyping",
+    "template"
+  ],
+  "license": "MIT",
+  "author": "Rumeasiyan",
+  "homepage": "https://github.com/Rumeasiyan/ui-design-lab#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rumeasiyan/ui-design-lab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rumeasiyan/ui-design-lab/issues"
+  },
   "type": "module",
   "packageManager": "pnpm@11.5.2",
   "engines": {

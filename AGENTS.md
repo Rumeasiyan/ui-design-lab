@@ -5,7 +5,7 @@ changes. Open work items live as GitHub issues (`gh issue list`), not in a doc.
 
 ## What this project is
 
-`design-template` is a reusable scaffold, cloned per UI/UX design project, for running
+`ui-design-lab` is a reusable scaffold, cloned per UI/UX design project, for running
 multiple aesthetic "directions" side-by-side with a live tweak bar for design tokens,
 device-size preview frames, and scripted image/video generation. It is not itself a
 client project — it's the harness other projects get built inside of. Stack: Vite +
@@ -34,12 +34,14 @@ image/video-gen tooling decisions.
 | `scripts/imagegen.mjs` | Image generation via `codex exec` (ChatGPT Plus session, no API key). |
 | `scripts/videogen/index.mjs` + `providers/*.mjs` | Video generation dispatcher + per-provider HTTP calls. |
 | `USAGE.md` | Step-by-step walkthrough of running a design session (clone, tabs, tuning, generating assets). |
+| `CONTRIBUTING.md` | What an outside contributor must satisfy before opening a PR (mirrors the Constraints below). |
+| `.github/workflows/ci.yml` | CI: runs `pnpm lint` + `pnpm build` on every push/PR to `master`. |
 | `gh issue list --label unverified` | Anything flagged as needing real-world verification before you trust it. |
 
 ## Working agreements
 
-- Repo: `github.com/Rumeasiyan/design-template`. `gh` CLI is authenticated as
-  `Rumeasiyan`. Issues are used as a task tracker: open one before starting non-trivial
+- Repo: `github.com/Rumeasiyan/ui-design-lab` — **public, MIT licensed, open to outside
+  contributors.** `gh` CLI is authenticated as `Rumeasiyan`. Issues are used as a task tracker: open one before starting non-trivial
   work, assign to `Rumeasiyan` (solo repo — no one else to assign to), work, commit
   referencing the issue number, comment the outcome, close.
   - Closing comment states: what was built, what was verified, the resulting
@@ -54,8 +56,12 @@ image/video-gen tooling decisions.
 - Anything a future reader would need — an open question, a deferred fix, a discovered
   bug, a risky assumption — becomes an issue (or a `DECISIONS.md` entry for a resolved
   decision) at the moment it's found, not left only in conversation.
-- Branch policy: commit directly to `master`. Solo repo, no PR review process — feature
-  branches would just be ceremony.
+- Branch policy: the maintainer commits directly to `master` — feature branches for
+  solo work would just be ceremony. Outside contributors fork and open a PR; CI
+  (`pnpm lint` + `pnpm build`) must be green before merge.
+- Public-repo hygiene: this repo is read by strangers. Keep `README.md` accurate to what
+  actually works (an unverified feature is labeled unverified, not implied working), and
+  never let a private path, key, or client name land in a commit.
 
 ## Constraints
 
@@ -81,7 +87,8 @@ image/video-gen tooling decisions.
   each provider's real API reference. Don't trust their request/response shapes without
   checking live docs first — issue #3 has the doc links.
 - **`.env` is gitignored; never commit real API keys.** `.env.example` documents the
-  shape only.
+  shape only. The repo is public — a committed key is a leaked key; rotate first, then
+  rewrite history.
 
 ## Commands
 
@@ -92,6 +99,9 @@ pnpm build        # tsc -b && vite build
 pnpm lint         # oxlint (rules: react/rules-of-hooks=error, react/only-export-components=warn)
 pnpm preview      # preview a production build
 ```
+
+CI runs `pnpm install --frozen-lockfile`, `pnpm lint`, and `pnpm build` on every push and
+PR to `master` (`.github/workflows/ci.yml`). Run the last two locally before pushing.
 
 No test suite exists yet.
 
@@ -105,14 +115,14 @@ No test suite exists yet.
   are navigated via `ScreenNav`, which only renders when it has more than one.
 - New tunable design values go in **both** `src/tokens.css` (as a custom property) and
   `TweakBar.tsx`'s `FIELDS` list — adding to only one breaks the tuning UI or the export.
-- No commits yet, so no established commit-message style to follow. Use clear, imperative
-  subject lines; body only when the "why" isn't obvious from the diff.
+- Commit messages: clear, imperative subject lines; body only when the "why" isn't
+  obvious from the diff. Reference the issue number when one exists.
 
 ## Versioning
 
 - Canonical source: `package.json` `version` field. No separate build number (this is a
   web app served/built via Vite, not a platform with its own build-number concept).
-- Current version: `0.3.0` (pre-1.0, template still stabilizing — see open `unverified`
+- Current version: `0.4.0` (pre-1.0, template still stabilizing — see open `unverified`
   issues).
 - Update **per completed change** (not batched at release time), per semver:
   - Breaking change to the harness (e.g. token-shape change that breaks existing
