@@ -6,29 +6,69 @@
   TweakBar reads/writes these at runtime; "Copy CSS" exports the current values back into
   this shape so a tuning session can be pasted back in permanently.
 
-  Two groups of tokens:
-    --color-* / --font-* / --radius / --gap / --motion-*   the DIRECTIONS' design tokens
-    --chrome-*                                             the HARNESS's own UI
+  Three groups of tokens:
+    --color-*                    per-theme palette. Every one needs a light value below.
+    --font-* / --radius / ...    shared across both themes.
+    --chrome-*                   the HARNESS's own UI, per-theme.
 
   Keep them separate. A direction should never reference a --chrome-* token: the chrome is
-  the tool, not the design. The chrome tokens exist only so the harness itself stays legible
-  when the light theme is on.
+  the tool, not the design. The chrome tokens exist only so the harness itself stays
+  legible when the light theme is on.
 
-  The light theme is a full override block below. Every --color-* and --chrome-* token
-  defined in :root must also be defined there, or it will silently keep its dark value.
+  Anything tunable here must have a matching entry in TweakBar.tsx's FIELDS list, and any
+  --color-* token must also appear in the :root[data-theme='light'] block — a token defined
+  only in :root silently keeps its dark value in light mode.
 */
 :root {
   color-scheme: dark;
 
-  /* color — the direction's palette */
+  /* ── color: the direction's palette ─────────────────────────────────────── */
   --color-bg: #0a0a0a;
   --color-surface: #151515;
+  --color-elevated: #1e1e1e;
   --color-fg: #f5f5f5;
   --color-muted: #8a8a8a;
   --color-border: #2a2a2a;
   --color-accent: #ff4d4d;
+  --color-accent-fg: #0a0a0a; /* text/icon colour that sits ON the accent */
 
-  /* color — the harness chrome (tab bars, sidebars, tweak panel) */
+  /* ── type ───────────────────────────────────────────────────────────────── */
+  /*
+    Three shared faces, not one per direction. A direction differentiates itself by WHICH
+    face it leans on — display for editorial heads, mono throughout for brutalist, body for
+    soft — plus weight, tracking and leading. That is what keeps one token set able to
+    serve genuinely different aesthetics.
+  */
+  --font-display: 'Iowan Old Style', Palatino, Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-scale: 1; /* read by DeviceFrame as the preview's base font-size multiplier */
+  --weight-display: 700;
+  --weight-body: 400;
+  --tracking-display: -0.02em;
+  --tracking-body: 0em;
+  --leading-display: 1;
+  --leading-body: 1.6;
+  --measure: 62ch; /* max line length for body copy */
+
+  /* ── shape ──────────────────────────────────────────────────────────────── */
+  --radius: 8px;
+  --border-width: 1px;
+  --gap: 16px;
+  --pad: 32px; /* outer padding of a screen's content */
+
+  /* ── depth ──────────────────────────────────────────────────────────────── */
+  --shadow-strength: 0.35; /* 0 = flat; alpha of the shadow colour */
+  --shadow-y: 12px;
+  --shadow: 0 var(--shadow-y) calc(var(--shadow-y) * 2.5) rgb(0 0 0 / var(--shadow-strength));
+
+  /* ── motion ─────────────────────────────────────────────────────────────── */
+  --motion-on: 1; /* 0 or 1 — multiply a transform/duration by it to gate motion off */
+  --motion-duration: 1; /* multiplier */
+  --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+  --reveal-distance: 22px;
+
+  /* ── color: the harness chrome (tab bars, sidebars, tweak panel) ─────────── */
   --chrome-bg: #050505;
   --chrome-bg-alt: #101010;
   --chrome-fg: #f5f5f5;
@@ -36,21 +76,6 @@
   --chrome-border: #262626;
   --chrome-hover: #1c1c1c;
   --chrome-active: #303030;
-
-  /* type */
-  --font-display: 'Inter', system-ui, sans-serif;
-  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --font-scale: 1; /* read by DeviceFrame as the preview's base font-size multiplier */
-
-  /* shape */
-  --radius: 8px;
-  --gap: 16px;
-
-  /* motion */
-  --motion-on: 1; /* 0 or 1 — multiply a transform/duration by it to gate motion off */
-  --motion-duration: 1; /* multiplier */
-  --reveal-distance: 22px;
 }
 
 :root[data-theme='light'] {
@@ -58,10 +83,14 @@
 
   --color-bg: #fbfaf8;
   --color-surface: #ffffff;
+  --color-elevated: #ffffff;
   --color-fg: #14110e;
   --color-muted: #6b6660;
   --color-border: #e3ded6;
   --color-accent: #d92f2f;
+  --color-accent-fg: #ffffff;
+
+  --shadow-strength: 0.1;
 
   --chrome-bg: #ffffff;
   --chrome-bg-alt: #f3f1ed;
@@ -75,5 +104,5 @@
 body {
   background: var(--chrome-bg);
   color: var(--chrome-fg);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
 }

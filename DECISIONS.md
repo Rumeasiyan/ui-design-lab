@@ -6,6 +6,54 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-08-27 — Rich token set, per-theme tuning, assets as a requirement
+
+**Decision:** Expanded `tokens.css` to a full design system (palette, typography, shape,
+depth, motion) with a TweakBar control for each; made colour tuning theme-aware; and
+restated the asset rule as a positive requirement backed by pluggable image providers.
+
+**Why:** The tuning surface exposed six values, none of them colour or typography — the two
+things a direction actually lives or dies on. And the asset rule was phrased only as a
+prohibition ("no placeholders"), which a direction can satisfy by having no imagery at all.
+That loophole produces exactly the failure the harness exists to catch: a screen of pure
+type and boxes that reads as machine-generated, where a reviewer cannot tell restraint from
+emptiness.
+
+**The per-theme trap, and why it forced a redesign of TweakBar's state:** the panel writes
+to `document.documentElement.style`. Inline styles beat both `:root` and
+`:root[data-theme='light']`, so once colours became tunable, a colour picked in light mode
+would silently follow you into dark. Edits are now stored per theme, cleared and re-applied
+on every theme flip, and exported as two blocks. Tokens that `tokens.css` defines in its
+light block are marked `themed: true`; everything else stays shared. "Copy CSS" needs values
+for the theme you are *not* looking at, which it gets by briefly flipping the theme
+attribute at mount to read both sets of defaults — a synchronous style recalc, no paint, so
+nothing flickers.
+
+**One shared font token set vs. per-direction fonts:** a direction cannot own a private
+face without breaking the single-source-of-truth rule, but Editorial wanting serif and
+Brutalist wanting mono is a real conflict. Resolved by giving the shared set three faces —
+`--font-display` (serif), `--font-body` (sans), `--font-mono` — and having each direction
+differentiate by which one it leans on, plus weight, tracking and leading. `--font-serif`
+was removed as redundant.
+
+**Image providers:** split `imagegen.mjs` into a dispatcher plus `codex` / `local` /
+`openai`, mirroring `videogen/`. `codex` stays the default because it costs nothing beyond
+an existing subscription. `local` exists because a self-hosted generator has no marginal
+cost, which removes the budget argument for skipping imagery — it was written against a
+real API contract (`POST /api/generate` -> poll `GET /api/jobs/{id}` -> fetch
+`/output?index=0`), not guessed, though it is still unverified end-to-end because no server
+was running to test against (issue #13).
+
+**Consequences:** directions carried over from 0.5.x still render, but any that referenced
+`--font-serif` are broken and must move to `--font-display`. The local provider's base URL
+lives only in `.env` — committing a host path to a public repo is the failure mode being
+guarded against here.
+
+**Refs:** issue #12, `src/tokens.css`, `src/components/TweakBar.tsx`,
+`scripts/imagegen/`, `.env.example`.
+
+---
+
 ## 2026-08-27 — Left screen rail, arrow-key nav, light theme, shipped samples
 
 **Decision:** Four harness changes landed together because they share a surface: the

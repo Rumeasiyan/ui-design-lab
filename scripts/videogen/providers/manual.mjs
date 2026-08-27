@@ -2,7 +2,7 @@
   Default provider. Does not call any API or spend any money — composes the full prompt and
   hands it back so you can paste it into Google Flow (Veo, already covered by your AI Pro
   subscription's Flow credits) or any other tool by hand.
-  See notes/2026-08-17-video-api-comparison.md for why this is the default.
+  See DECISIONS.md for why this is the default.
 */
 export async function generate({ prompt, durationSeconds, aspectRatio }) {
   const composed = [

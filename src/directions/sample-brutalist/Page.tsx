@@ -12,23 +12,32 @@
 export default function BrutalistHome() {
   return (
     <div
-      className="min-h-full p-[1.5em] text-[0.9em]"
+      className="min-h-full text-[0.9em]"
       style={{
         background: 'var(--color-bg)',
         color: 'var(--color-fg)',
         fontFamily: 'var(--font-mono)',
+        fontWeight: 'var(--weight-body)',
+        lineHeight: 'var(--leading-body)',
+        letterSpacing: 'var(--tracking-body)',
+        padding: 'var(--pad)',
       }}
     >
       <div
-        className="flex items-center justify-between border-2 px-[1em] py-[0.6em] uppercase"
-        style={{ borderColor: 'var(--color-fg)' }}
+        className="flex items-center justify-between px-[1em] py-[0.6em] uppercase"
+        style={{ border: 'calc(var(--border-width) * 2) solid var(--color-fg)' }}
       >
-        <span className="font-bold tracking-[0.1em]">SYSTEM / OUTPUT</span>
+        <span className="tracking-[0.1em]">SYSTEM / OUTPUT</span>
         <span style={{ color: 'var(--color-accent)' }}>● LIVE</span>
       </div>
 
       <h1
-        className="mt-[0.8em] break-words text-[3.6em] font-bold uppercase leading-[0.88] tracking-[-0.02em]"
+        className="mt-[0.8em] break-words text-[3.6em] uppercase"
+        style={{
+          fontWeight: 'var(--weight-display)',
+          lineHeight: 'var(--leading-display)',
+          letterSpacing: 'var(--tracking-display)',
+        }}
       >
         BUILD
         <br />
@@ -46,20 +55,20 @@ export default function BrutalistHome() {
         ].map(([label, value]) => (
           <div
             key={label}
-            className="border-2 p-[0.8em] uppercase"
-            style={{ borderColor: 'var(--color-fg)', marginRight: '-2px', marginBottom: '-2px' }}
+            className="p-[0.8em] uppercase"
+            style={{ border: 'calc(var(--border-width) * 2) solid var(--color-fg)', marginRight: 'calc(var(--border-width) * -2)', marginBottom: 'calc(var(--border-width) * -2)' }}
           >
             <div className="text-[0.7em] tracking-[0.15em]" style={{ color: 'var(--color-muted)' }}>
               {label}
             </div>
-            <div className="mt-[0.3em] text-[1.6em] font-bold leading-none">{value}</div>
+            <div className="mt-[0.3em] text-[1.6em] leading-none">{value}</div>
           </div>
         ))}
       </div>
 
       <div
-        className="mt-[1.2em] border-2 p-[1em]"
-        style={{ borderColor: 'var(--color-fg)', background: 'var(--color-surface)' }}
+        className="mt-[1.2em] p-[1em]"
+        style={{ border: 'calc(var(--border-width) * 2) solid var(--color-fg)', background: 'var(--color-surface)' }}
       >
         <p className="uppercase leading-[1.7]">
           NO GRADIENTS. NO SHADOWS. NO APOLOGIES.

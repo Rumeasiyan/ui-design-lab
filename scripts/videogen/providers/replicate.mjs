@@ -1,6 +1,6 @@
 /*
   Replicate — pay-per-use, no subscription. Recommended default paid provider (see
-  notes/2026-08-17-video-api-comparison.md): most mature platform, broadest model range
+  DECISIONS.md): most mature platform, broadest model range
   (Kling, Veo 3.1, Sora 2, Seedance, Wan). Requires REPLICATE_API_TOKEN.
   Docs: https://replicate.com/docs
 */

@@ -20,7 +20,7 @@ Expect an initial response within 7 days.
 
 A few things worth knowing about this repo's threat surface:
 
-- **`scripts/imagegen.mjs` shells out to the `codex` CLI**, and
+- **`scripts/imagegen/index.mjs` shells out to the `codex` CLI**, and
   `scripts/videogen/` makes outbound HTTP calls to third-party video providers.
   Prompts you pass are sent to those services. Don't put secrets in a prompt.
 - **The three paid video providers (`replicate`, `openrouter`, `atlascloud`) are

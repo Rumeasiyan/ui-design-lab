@@ -95,7 +95,7 @@ writeFileSync(
         Fill in from your prompt's Aesthetic/Placement (see PROMPT_TEMPLATE.md). Bind every
         color/font/radius to the CSS custom properties in src/tokens.css, and size type in
         em so the TweakBar's Font Scale slider moves it. Check the design in both themes
-        (press D). If it needs an image, generate a real one with scripts/imagegen.mjs —
+        (press D). If it needs an image, generate a real one with scripts/imagegen/index.mjs —
         never leave a placeholder image/icon/stock photo in.
       </p>
     </div>

@@ -1,7 +1,7 @@
 /*
   OpenRouter — pay-per-use video API (launched 2026), one schema across models. Supports
   Veo 3.1, Seedance, Wan; no Kling as of this research (see
-  notes/2026-08-17-video-api-comparison.md). Requires OPENROUTER_API_KEY.
+  DECISIONS.md). Requires OPENROUTER_API_KEY.
   Docs: https://openrouter.ai/docs
 */
 const DEFAULT_MODEL = 'google/veo-3.1'

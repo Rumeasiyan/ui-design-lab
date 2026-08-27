@@ -3,6 +3,41 @@
 Format: version, date, then what changed and why (link a `DECISIONS.md` entry when one
 exists). Newest first.
 
+## 0.6.0 — 2026-08-27
+
+- **Breaking (token shape):** `src/tokens.css` roughly tripled. New tokens:
+  `--color-elevated`, `--color-accent-fg`, `--font-body`, `--weight-display`,
+  `--weight-body`, `--tracking-display`, `--tracking-body`, `--leading-display`,
+  `--leading-body`, `--measure`, `--border-width`, `--pad`, `--shadow-strength`,
+  `--shadow-y`, `--shadow`, `--motion-ease`. `--font-serif` was **removed** — the shared
+  `--font-display` is now the serif, and a direction differentiates itself by which of the
+  three faces it leans on rather than by owning a private one.
+- TweakBar went from 6 controls to ~30, in five collapsible groups, with two new field
+  types: colour pickers (with a hex field) and selects (font stacks, easing curves).
+- TweakBar colour edits are now tracked **per theme**. The panel writes inline styles on
+  `<html>`, which beat both `:root` and the light block, so a colour tuned in light mode
+  used to leak into dark. "Copy CSS" now exports both blocks.
+- Image generation is now pluggable: `scripts/imagegen.mjs` became
+  `scripts/imagegen/index.mjs` plus `providers/{codex,local,openai}.mjs`, dispatched on
+  `IMAGE_GEN_PROVIDER` (default `codex`, unchanged behaviour). The `local` provider talks
+  to a self-hosted generation server configured only via `IMAGE_GEN_BASE_URL` — no host
+  path is committed.
+- The asset rule is now a positive requirement: a direction is not done until it carries
+  real generated imagery. Avoiding imagery entirely now fails the rule the same way a grey
+  placeholder does.
+- The three sample directions were rebuilt on the full token set, so the new sliders
+  visibly move them.
+- Fixed a React effect-ordering bug surfaced while verifying the above: child effects run
+  before parent ones, so TweakBar's effect fired with the new `theme` prop while `useTheme`
+  (in `App`) had not yet written `data-theme` to `<html>`. Every computed read in that
+  effect therefore returned the previous theme's values — the panel showed stale numbers
+  and "Copy CSS" wrote them into the wrong block. TweakBar now sets the attribute itself
+  before reading.
+- Removed the last references to the maintainer's private planning notes from
+  `scripts/videogen/*`.
+- See `DECISIONS.md` 2026-08-27 "Rich token set, per-theme tuning, assets as a
+  requirement", issue #12.
+
 ## 0.5.0 — 2026-08-27
 
 - **Breaking (token shape):** `src/tokens.css` gained a `:root[data-theme='light']`

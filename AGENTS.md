@@ -35,7 +35,8 @@ the notes.
 | `scripts/new-direction.mjs` | Scaffolding a new direction (folder + `Page.tsx` "home" screen + registry entry) in one command. |
 | `scripts/new-screen.mjs` | Scaffolding an additional screen into an existing direction. |
 | `scripts/remove-samples.mjs` | Deleting the shipped sample directions (everything marked `sample: true`). |
-| `scripts/imagegen.mjs` | Image generation via `codex exec` (ChatGPT Plus session, no API key). |
+| `scripts/imagegen/index.mjs` + `providers/*.mjs` | Image generation dispatcher: `codex` (default, no API key), `local` (self-hosted server), `openai` (paid). |
+| `src/components/TweakBar.tsx` `FIELDS` | The tunable-token list. Colour fields are per-theme; see the header comment before touching it. |
 | `scripts/videogen/index.mjs` + `providers/*.mjs` | Video generation dispatcher + per-provider HTTP calls. |
 | `USAGE.md` | Step-by-step walkthrough of running a design session (clone, tabs, tuning, generating assets). |
 | `CONTRIBUTING.md` | What an outside contributor must satisfy before opening a PR (mirrors the Constraints below). |
@@ -94,15 +95,26 @@ the notes.
   token defined only in `:root` keeps its dark value in light mode, which usually reads as
   an invisible or blown-out element rather than an obvious bug. Enforced by convention —
   press `D` and look.
-- **Never use placeholder images/icons/stock art in a direction.** If a direction's
-  design calls for an image, generate a real one with `scripts/imagegen.mjs` (wraps
-  `codex exec`'s image tool, billed against the ChatGPT Plus session) before calling the
-  direction done. Why: a gray box or stock photo can't be judged for aesthetic feel —
-  it defeats the point of a visual direction review. Enforced by convention only — check
-  by eye when reviewing a direction.
+- **A direction is not done until it carries real generated imagery.** This is a positive
+  requirement, not only a ban on placeholders. Three things are equally disallowed: a grey
+  placeholder box, stock art, and a design that quietly avoids imagery so it never has to
+  source any. Why: a screen built purely from type, borders and flat colour reads as
+  machine-generated, and a review that can't tell "restrained" from "unfinished" is
+  worthless — which defeats the entire point of comparing directions. Generate assets with
+  `scripts/imagegen/index.mjs`; the `local` provider has no marginal cost, so there is no
+  budget excuse. Enforced by convention only — check by eye when reviewing a direction.
 - **`VIDEO_GEN_PROVIDER` defaults to `manual` (no API call, no cost).** Why: explicit
   user decision — pay-per-use video APIs are opt-in per project, not on by default. Do
   not change the default. See `scripts/videogen/providers/manual.mjs`.
+- **`IMAGE_GEN_PROVIDER` defaults to `codex`** (no API key, reuses the ChatGPT Plus
+  session). The `local` provider is configured only through `IMAGE_GEN_BASE_URL` in `.env`
+  — **never commit a host path or machine-specific location**; the repo is public and that
+  URL is the user's, not the template's.
+- **TweakBar colour edits are per-theme.** The panel writes to
+  `document.documentElement.style`, which is inline and beats both `:root` and
+  `:root[data-theme='light']`. Anything `tokens.css` defines in its light block must be
+  marked `themed: true` in `FIELDS`, or tuning it in one theme silently leaks into the
+  other. Enforced by convention — the mechanism is documented in `TweakBar.tsx`'s header.
 - **The three paid video providers (`replicate.mjs`, `openrouter.mjs`,
   `atlascloud.mjs`) are unverified guesses**, written from search-result summaries, not
   each provider's real API reference. Don't trust their request/response shapes without
@@ -146,7 +158,7 @@ No test suite exists yet.
 
 - Canonical source: `package.json` `version` field. No separate build number (this is a
   web app served/built via Vite, not a platform with its own build-number concept).
-- Current version: `0.5.0` (pre-1.0, template still stabilizing — see open `unverified`
+- Current version: `0.6.0` (pre-1.0, template still stabilizing — see open `unverified`
   issues).
 - Update **per completed change** (not batched at release time), per semver:
   - Breaking change to the harness (e.g. token-shape change that breaks existing

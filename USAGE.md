@@ -50,11 +50,13 @@ The app (`src/App.tsx`) has two top bars and three columns:
   switching direction always resets to that direction's first screen.
 - **Center pane** (`DeviceFrame`) — renders the active screen inside a frame at mobile
   (390px), tablet (834px), or desktop (100%) width.
-- **Right sidebar** (`TweakBar`) — sliders/toggles for the tunable CSS custom
-  properties in `src/tokens.css`: radius, gap, font scale, motion on/off, motion
-  duration, reveal distance. These edit the live `:root` styles in the browser, so
-  changes apply instantly to whichever direction is showing — nothing is saved until
-  you use "Copy CSS".
+- **Right sidebar** (`TweakBar`) — a control for every tunable custom property in
+  `src/tokens.css`, in five collapsible groups: **Color** (eight colour pickers),
+  **Type** (display/body/mono face, scale, weights, tracking, leading, measure),
+  **Shape** (radius, border width, gap, padding), **Depth** (shadow strength and
+  offset), and **Motion** (on/off, duration, easing, reveal distance). These edit the
+  live `:root` styles in the browser, so changes apply instantly to whichever direction
+  is showing — nothing is saved until you use "Copy CSS".
 
 ### Keyboard
 
@@ -150,21 +152,28 @@ With a direction open (not grid view):
 
 1. Drag TweakBar sliders / flip toggles — the page updates live. Check the result in
    both themes (`D`); a direction isn't done until it holds up in light and dark.
-2. When it looks right, click **Copy CSS**. This copies a `:root { ... }` block with
-   the current values of every tunable token to your clipboard.
-3. Paste that block over the equivalent properties in `src/tokens.css` to make the
-   tuning permanent (the TweakBar only edits the live DOM — a page refresh reverts to
-   whatever `tokens.css` says).
-4. **Reset** reverts the TweakBar (and the live page) back to `tokens.css`'s values,
-   discarding un-copied tuning.
+2. When it looks right, click **Copy CSS**. This copies *both* blocks — the shared
+   `:root { ... }` and the `:root[data-theme='light'] { ... }` override — with the
+   current value of every tunable token.
+3. Paste them over the equivalent blocks in `src/tokens.css` to make the tuning permanent
+   (the TweakBar only edits the live DOM — a page refresh reverts to whatever
+   `tokens.css` says).
+4. **Reset** discards tuning in **both** themes and returns to `tokens.css`'s values.
+
+**Colours are tuned per theme.** The panel writes inline styles on `<html>`, which beat
+both `:root` and the light block, so a colour picked in light mode would otherwise leak
+into dark. Colour and shadow-strength edits are therefore remembered separately per theme
+and re-applied when you press `D`; everything else (type, shape, motion) is shared. The
+theme you are currently editing is shown at the top of the panel.
 
 ## 8. Generating supporting assets
 
 Image and video generation are invoked from the CLI, not the browser UI — see
 `README.md`'s "Image generation" / "Video generation" sections for commands and current
-verification status. **Images are not optional if a direction's design calls for one —
-generate a real image via `scripts/imagegen.mjs` (wraps `codex exec`'s image tool, no
-separate API key needed) rather than leaving a placeholder.** Video generation defaults
+verification status. **A direction is not done until it carries real imagery** — not merely "no placeholders",
+but no quietly avoiding images either. Generate them with `scripts/imagegen/index.mjs`.
+Pick a provider in `.env`: `codex` (default, no API key), `local` (your own generation
+server, no per-image cost), or `openai` (paid). Video generation defaults
 to `manual` mode (no API call) and stays optional/opt-in per the constraint in
 `AGENTS.md`.
 

@@ -14,14 +14,26 @@ const ROWS = [
 export default function SoftSettings() {
   return (
     <div
-      className="min-h-full p-[2em]"
+      className="min-h-full"
       style={{
         background: 'var(--color-bg)',
         color: 'var(--color-fg)',
-        fontFamily: 'var(--font-display)',
+        fontFamily: 'var(--font-body)',
+        fontWeight: 'var(--weight-body)',
+        letterSpacing: 'var(--tracking-body)',
+        lineHeight: 'var(--leading-body)',
+        padding: 'var(--pad)',
       }}
     >
-      <h1 className="text-[1.8em] font-medium leading-tight">Settings</h1>
+      <h1 className="text-[1.8em]" style={{
+          fontFamily: 'var(--font-body)',
+          fontWeight: 'var(--weight-display)',
+          letterSpacing: 'var(--tracking-display)',
+          lineHeight: 'var(--leading-display)',
+        }}
+      >
+        Settings
+      </h1>
       <p className="mt-[0.3em] text-[0.9em]" style={{ color: 'var(--color-muted)' }}>
         Preferences apply to every direction in this project.
       </p>
@@ -30,8 +42,9 @@ export default function SoftSettings() {
         className="mt-[1.8em] overflow-hidden"
         style={{
           background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
+          border: 'var(--border-width) solid var(--color-border)',
           borderRadius: 'var(--radius)',
+          boxShadow: 'var(--shadow)',
         }}
       >
         {ROWS.map(([label, note, on], i) => (
@@ -40,7 +53,7 @@ export default function SoftSettings() {
             className="flex items-center justify-between p-[1.2em]"
             style={{
               gap: 'var(--gap)',
-              borderTop: i === 0 ? 'none' : '1px solid var(--color-border)',
+              borderTop: i === 0 ? 'none' : 'var(--border-width) solid var(--color-border)',
             }}
           >
             <div>

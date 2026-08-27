@@ -2,7 +2,7 @@
   Atlas Cloud — pay-per-use, cheapest quoted Veo price seen in research ($0.03-0.05/sec),
   but a newer platform with inconsistent pricing across their own marketing pages — verify
   their live pricing page before relying on the number (see
-  notes/2026-08-17-video-api-comparison.md). Requires ATLASCLOUD_API_KEY.
+  DECISIONS.md). Requires ATLASCLOUD_API_KEY.
   Docs: https://www.atlascloud.ai/
 */
 const DEFAULT_MODEL = 'google/veo-3.1'

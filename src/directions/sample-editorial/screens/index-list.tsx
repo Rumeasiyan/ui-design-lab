@@ -18,7 +18,15 @@ export default function EditorialIndex() {
       className="min-h-full px-[8%] py-[4em]"
       style={{ background: 'var(--color-bg)', color: 'var(--color-fg)' }}
     >
-      <h1 className="text-[2.4em] leading-[1.1]" style={{ fontFamily: 'var(--font-serif)' }}>
+      <h1
+        className="text-[2.4em]"
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontWeight: 'var(--weight-display)',
+          letterSpacing: 'var(--tracking-display)',
+          lineHeight: 'var(--leading-display)',
+        }}
+      >
         Contents
       </h1>
       <p
@@ -41,7 +49,7 @@ export default function EditorialIndex() {
             >
               {num}
             </span>
-            <span className="flex-1 text-[1.3em]" style={{ fontFamily: 'var(--font-serif)' }}>
+            <span className="flex-1 text-[1.3em]" style={{ fontFamily: 'var(--font-display)' }}>
               {title}
             </span>
             <span

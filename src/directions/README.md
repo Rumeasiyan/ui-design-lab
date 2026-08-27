@@ -39,8 +39,9 @@ Rules that apply to every direction (see [`../../AGENTS.md`](../../AGENTS.md)):
   work if this holds.
 - A direction never references a `--chrome-*` token. Those belong to the harness UI.
 - Each direction fully commits to its own aesthetic. Never blend two in one component.
-- No placeholder images, icons, or stock art. Generate real assets with
-  `scripts/imagegen.mjs`.
+- **Real imagery is required, not optional.** No placeholders, no stock art, and no
+  quietly avoiding images so none have to be sourced — a screen of pure type and boxes
+  reads as machine-generated. Generate with `scripts/imagegen/index.mjs`.
 - Size type in `em`, not `rem` or `px`, so the TweakBar's Font Scale slider moves it —
   `DeviceFrame` sets the preview's base font size from `--font-scale`.
 - Both themes have to work. Toggle light/dark (the `D` key) before calling a direction

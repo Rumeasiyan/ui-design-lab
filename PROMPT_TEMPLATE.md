@@ -106,5 +106,5 @@ italic emphasis word, white ground with thin orbit lines, blue pill CTA, trust l
 3. Fill in each `Page.tsx` per its Aesthetic/Placement, binding every visual value to a
    `var(--token-name)` from `src/tokens.css` (add new tokens if a direction needs a
    value not yet tunable — see `USAGE.md` section 3).
-4. For hero imagery, use `scripts/imagegen.mjs` (or the manual/video-API paths in
+4. For hero imagery, use `scripts/imagegen/index.mjs` (or the manual/video-API paths in
    `scripts/videogen/`) per direction's described visual.

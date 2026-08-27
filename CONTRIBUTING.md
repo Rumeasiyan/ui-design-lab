@@ -37,8 +37,10 @@ These are the ones a PR will be sent back for:
    list.** Adding it to only one breaks either the tuning UI or the export.
 3. **Each direction fully commits to its own aesthetic — never blend two directions in
    one component.** Side-by-side comparison of distinct directions is the entire point.
-4. **No placeholder images, icons, or stock art in a direction.** Generate a real asset
-   with `scripts/imagegen.mjs`. A gray box can't be judged for aesthetic feel.
+4. **A direction must carry real generated imagery.** Not just "no placeholders" — a
+   design that avoids imagery entirely so it never has to source any fails this too. A
+   screen of pure type and boxes reads as machine-generated. Generate assets with
+   `scripts/imagegen/index.mjs`; the `local` provider costs nothing per image.
 5. **Size type in `em`, not `rem` or `px`.** `DeviceFrame` sets the preview's base font
    size from `--font-scale`; a `rem` resolves against the document root and ignores the
    Font Scale slider.

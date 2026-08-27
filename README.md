@@ -29,7 +29,7 @@ instead of guessing values in a text editor.
 - [How it's organized](#how-its-organized)
 - [Adding a new direction](#adding-a-new-direction)
 - [Adding a screen to a direction](#adding-a-screen-to-a-direction)
-- [Image generation](#image-generation)
+- [Assets](#assets)
 - [Video generation](#video-generation)
 - [FAQ](#faq)
 - [Project status](#project-status)
@@ -42,11 +42,11 @@ instead of guessing values in a text editor.
 |---|---|
 | **Side-by-side design directions** | One folder per aesthetic direction. Switch with a tab bar, number keys `1`-`9`, `←`/`→`, or press `G` for a grid showing every direction at once. |
 | **Three worked samples to start from** | Editorial, Brutalist, and Soft directions — three screens each, built from the same tokens — showing what a finished direction looks like. One command deletes them all when you're ready to design. |
-| **Live design-token tuning** | A TweakBar of sliders/toggles editing the real CSS custom properties in `src/tokens.css` at runtime — radius, gap, font scale, motion. "Copy CSS" exports the tuned values back into token shape. |
+| **Live design-token tuning** | ~30 controls over the real CSS custom properties in `src/tokens.css`: the full palette (colour pickers, per theme), typography (face, weight, tracking, leading, scale, measure), shape, depth, and motion. "Copy CSS" exports both theme blocks. |
 | **Device preview frames** | Render any screen at mobile (390px), tablet (834px), or desktop width without resizing your browser. |
 | **Light / dark preview** | Every color token has a light-theme value. Toggle with `D` — the control sits in the harness's top bar, never inside the design being judged. |
 | **Multi-screen flows** | A direction can hold several screens (Home → Detail → Settings), listed in a left sidebar and stepped through with `↑`/`↓`. |
-| **Scripted image generation** | `scripts/imagegen.mjs` wraps `codex exec`'s image tool — real generated art in your directions, never a gray placeholder box. |
+| **Real assets, not placeholders** | Pluggable image generation — `codex exec` (no API key), a self-hosted local server (no per-image cost), or the OpenAI Images API. A direction is not done until it carries real imagery. |
 | **Scripted video generation** | `scripts/videogen/` with a pluggable provider dispatcher. Defaults to `manual`: no API call, no cost. |
 | **A prompt pattern that works** | `PROMPT_TEMPLATE.md` — the Aesthetic / Reference / Intent / Guardrails structure for driving an AI agent to produce genuinely distinct directions, plus a worked example. |
 
@@ -154,20 +154,47 @@ Creates `src/directions/v2/screens/detail.tsx` and appends it to that direction'
 `ScreenNav` sidebar appears on the left to switch between them, driven by `↑`/`↓`.
 Number keys and `←`/`→` still select *directions*, not screens.
 
-## Image generation
+## Assets
+
+**A direction is not finished until it carries real imagery.** This is a positive
+requirement, not just a ban on placeholders.
+
+A screen built only from type, borders, and flat colour blocks reads as machine-generated —
+and that is precisely the judgement a design review exists to make. If you cannot tell
+whether a direction is good or just *empty*, it needs assets. Photography, illustration,
+texture, pattern, a logotype, a background gradient mesh: whatever the aesthetic calls for.
+Generate it.
+
+Three things are equally forbidden: a grey placeholder box, a stock photo, and a design that
+quietly avoids imagery so it never has to source any.
 
 ```bash
-node scripts/imagegen.mjs "a topographic contour-line illustration in dark-green ink" src/directions/v1/hero.png
+node scripts/imagegen/index.mjs "a topographic contour-line illustration in dark-green ink" src/directions/v1/hero.png
 ```
 
-Wraps `codex exec`'s built-in image tool — billed against your existing ChatGPT Plus
-subscription, no separate API key. Requires the `codex` CLI installed and logged in
-(`codex login`). **Unverified end-to-end** — see open issue #2.
+### Providers
 
-**Never ship a direction with placeholder images, icons, or stock art.** If a design
-calls for an image, generate a real one with this script before calling the direction
-done — a placeholder can't be judged for aesthetic feel, which defeats the point of a
-visual direction review.
+Set `IMAGE_GEN_PROVIDER` in `.env` (copy from `.env.example`):
+
+| Provider | Cost | Setup |
+|---|---|---|
+| `codex` *(default)* | None beyond your existing ChatGPT Plus subscription | `codex` CLI installed and logged in (`codex login`). No API key. |
+| `local` | None — runs on your own GPU | Set `IMAGE_GEN_BASE_URL` to your generation server. |
+| `openai` | Paid per image | Set `OPENAI_API_KEY`. |
+
+The `local` provider talks to any server exposing `POST /api/generate` →
+`GET /api/jobs/{id}` → `GET /api/jobs/{id}/output?index=0`.
+[story-panel-studio](https://github.com/Rumeasiyan/story-panel-studio) is one such server —
+self-hosted SDXL/FLUX generation on a consumer GPU, so a direction can have as many
+revisions of an image as it needs at no marginal cost.
+
+**No host path is committed to this repo.** The local provider is configured entirely from
+`.env`, so the location of your server stays yours. Note that such servers typically have
+**no authentication** — keep `IMAGE_GEN_BASE_URL` on loopback unless you have put auth in
+front of it.
+
+**Verification status:** `codex` and `local` are both **unverified end-to-end** — see open
+issues #2 and #13.
 
 ## Video generation
 
@@ -227,8 +254,10 @@ reliably produces distinct directions — but nothing requires an agent.
 
 ### Do the image and video generation scripts cost money?
 
-Image generation is billed against your existing ChatGPT Plus session through the `codex`
-CLI, with no separate API key. Video generation is **off by default**
+Image generation defaults to the `codex` provider, billed against your existing ChatGPT
+Plus session with no separate API key. The `local` provider costs nothing per image — it
+runs on your own GPU. Only the `openai` provider is paid per image, and it is opt-in.
+Video generation is **off by default**
 (`VIDEO_GEN_PROVIDER=manual`): it composes a prompt for you to paste into Google Flow by
 hand and makes no API call. Paid video providers are strictly opt-in per project.
 
@@ -243,6 +272,14 @@ it.
 
 Yes. It is MIT licensed — clone it, modify it, ship client work from it. See
 [`LICENSE`](LICENSE).
+
+### Why does it insist on generated images?
+
+Because a UI made of nothing but type and boxes looks AI-generated, and a direction review
+that can't distinguish "restrained" from "unfinished" is worthless. Real imagery, texture,
+and graphic detail are what make a design read as considered. The harness ships image
+generation for exactly this reason, with a zero-marginal-cost local option so there is no
+excuse to skip it.
 
 ### How do I delete the sample directions?
 

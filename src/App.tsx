@@ -109,7 +109,7 @@ export default function App() {
           </Suspense>
         </div>
 
-        <TweakBar />
+        <TweakBar theme={theme} />
       </div>
     </div>
   )

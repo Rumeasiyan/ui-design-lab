@@ -3,8 +3,8 @@
   Video-gen dispatcher. Reads VIDEO_GEN_PROVIDER from the environment (default: "manual" —
   no API call, no cost, prints the prompt for you to paste into Google Flow by hand).
   Set VIDEO_GEN_PROVIDER=replicate|openrouter|atlascloud to turn on a paid API for a
-  specific project — off by default is intentional, see .env.example and
-  notes/2026-08-17-video-api-comparison.md for why.
+  specific project — off by default is intentional, see .env.example and DECISIONS.md for
+  why.
 
   Usage:
     node scripts/videogen/index.mjs "prompt text" [--duration 8] [--aspect 16:9]

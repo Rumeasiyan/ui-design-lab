@@ -16,14 +16,27 @@ const ROWS = [
 export default function BrutalistGrid() {
   return (
     <div
-      className="min-h-full p-[1.5em] text-[0.9em] uppercase"
+      className="min-h-full text-[0.9em] uppercase"
       style={{
         background: 'var(--color-bg)',
         color: 'var(--color-fg)',
         fontFamily: 'var(--font-mono)',
+        fontWeight: 'var(--weight-body)',
+        lineHeight: 'var(--leading-body)',
+        letterSpacing: 'var(--tracking-body)',
+        padding: 'var(--pad)',
       }}
     >
-      <h1 className="text-[2em] font-bold leading-none">PIPELINE</h1>
+      <h1
+        className="text-[2em]"
+        style={{
+          fontWeight: 'var(--weight-display)',
+          lineHeight: 'var(--leading-display)',
+          letterSpacing: 'var(--tracking-display)',
+        }}
+      >
+        PIPELINE
+      </h1>
 
       <table className="mt-[1.2em] w-full border-collapse text-left">
         <thead>
@@ -31,8 +44,8 @@ export default function BrutalistGrid() {
             {['ID', 'STAGE', 'STATE', 'T'].map((h) => (
               <th
                 key={h}
-                className="border-2 p-[0.6em] text-[0.7em] tracking-[0.15em]"
-                style={{ borderColor: 'var(--color-fg)' }}
+                className="p-[0.6em] text-[0.7em] tracking-[0.15em]"
+                style={{ border: 'calc(var(--border-width) * 2) solid var(--color-fg)' }}
               >
                 {h}
               </th>
@@ -42,22 +55,22 @@ export default function BrutalistGrid() {
         <tbody>
           {ROWS.map(([id, stage, state, t]) => (
             <tr key={id}>
-              <td className="border-2 p-[0.6em]" style={{ borderColor: 'var(--color-fg)' }}>
+              <td className="p-[0.6em]" style={{ border: 'calc(var(--border-width) * 2) solid var(--color-fg)' }}>
                 {id}
               </td>
-              <td className="border-2 p-[0.6em] font-bold" style={{ borderColor: 'var(--color-fg)' }}>
+              <td className="p-[0.6em]" style={{ border: 'calc(var(--border-width) * 2) solid var(--color-fg)' }}>
                 {stage}
               </td>
               <td
-                className="border-2 p-[0.6em]"
+                className="p-[0.6em]"
                 style={{
-                  borderColor: 'var(--color-fg)',
+                  border: 'calc(var(--border-width) * 2) solid var(--color-fg)',
                   color: state === 'OK' ? 'var(--color-muted)' : 'var(--color-accent)',
                 }}
               >
                 {state}
               </td>
-              <td className="border-2 p-[0.6em]" style={{ borderColor: 'var(--color-fg)' }}>
+              <td className="p-[0.6em]" style={{ border: 'calc(var(--border-width) * 2) solid var(--color-fg)' }}>
                 {t}
               </td>
             </tr>

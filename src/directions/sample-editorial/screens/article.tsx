@@ -18,8 +18,13 @@ export default function EditorialArticle() {
       </span>
 
       <h1
-        className="mt-[0.8em] max-w-[20ch] text-[3em] leading-[1.05] tracking-[-0.02em]"
-        style={{ fontFamily: 'var(--font-serif)' }}
+        className="mt-[0.8em] max-w-[20ch] text-[3em]"
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontWeight: 'var(--weight-display)',
+          letterSpacing: 'var(--tracking-display)',
+          lineHeight: 'var(--leading-display)',
+        }}
       >
         Type at rest
       </h1>
@@ -36,8 +41,14 @@ export default function EditorialArticle() {
       </p>
 
       <div
-        className="mt-[2em] max-w-[62ch] text-[1.05em] leading-[1.75]"
-        style={{ fontFamily: 'var(--font-serif)' }}
+        className="mt-[2em] text-[1.05em]"
+        style={{
+          fontFamily: 'var(--font-body)',
+          fontWeight: 'var(--weight-body)',
+          letterSpacing: 'var(--tracking-body)',
+          lineHeight: 'var(--leading-body)',
+          maxWidth: 'var(--measure)',
+        }}
       >
         <p>
           <span
@@ -56,8 +67,12 @@ export default function EditorialArticle() {
         </p>
 
         <blockquote
-          className="my-[1.8em] border-l-2 pl-[1.2em] text-[1.4em] leading-[1.4]"
-          style={{ borderColor: 'var(--color-accent)' }}
+          className="my-[1.8em] pl-[1.2em] text-[1.4em]"
+          style={{
+            borderLeft: 'calc(var(--border-width) * 2) solid var(--color-accent)',
+            fontFamily: 'var(--font-display)',
+            lineHeight: 'var(--leading-display)',
+          }}
         >
           A line length is a promise about how much attention you intend to ask for.
         </blockquote>

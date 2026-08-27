@@ -20,17 +20,27 @@ const CARDS = [
 export default function SoftHome() {
   return (
     <div
-      className="min-h-full p-[2em]"
+      className="min-h-full"
       style={{
         background: 'var(--color-bg)',
         color: 'var(--color-fg)',
-        fontFamily: 'var(--font-display)',
+        fontFamily: 'var(--font-body)',
+        fontWeight: 'var(--weight-body)',
+        letterSpacing: 'var(--tracking-body)',
+        lineHeight: 'var(--leading-body)',
+        padding: 'var(--pad)',
       }}
     >
       <p className="text-[0.85em]" style={{ color: 'var(--color-muted)' }}>
         Good afternoon
       </p>
-      <h1 className="mt-[0.2em] text-[2.2em] font-medium leading-[1.15] tracking-[-0.01em]">
+      <h1 className="mt-[0.2em] text-[2.2em]" style={{
+          fontFamily: 'var(--font-body)',
+          fontWeight: 'var(--weight-display)',
+          letterSpacing: 'var(--tracking-display)',
+          lineHeight: 'var(--leading-display)',
+        }}
+      >
         Here&rsquo;s where things stand
       </h1>
 
@@ -43,16 +53,23 @@ export default function SoftHome() {
             key={label}
             className="p-[1.4em] transition-transform hover:-translate-y-[calc(var(--reveal-distance)*0.15*var(--motion-on))]"
             style={{
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
+              background: 'var(--color-elevated)',
+              border: 'var(--border-width) solid var(--color-border)',
               borderRadius: 'var(--radius)',
+              boxShadow: 'var(--shadow)',
               transitionDuration: 'calc(var(--motion-duration) * 220ms)',
+              transitionTimingFunction: 'var(--motion-ease)',
             }}
           >
             <div className="text-[0.8em]" style={{ color: 'var(--color-muted)' }}>
               {label}
             </div>
-            <div className="mt-[0.3em] text-[1.9em] font-medium leading-none">{value}</div>
+            <div
+              className="mt-[0.3em] text-[1.9em]"
+              style={{ fontWeight: 'var(--weight-display)', lineHeight: 'var(--leading-display)' }}
+            >
+              {value}
+            </div>
             <div className="mt-[0.7em] text-[0.85em] leading-[1.5]" style={{ color: 'var(--color-muted)' }}>
               {note}
             </div>
@@ -64,11 +81,14 @@ export default function SoftHome() {
         className="mt-[var(--gap)] p-[1.6em]"
         style={{
           background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
+          border: 'var(--border-width) solid var(--color-border)',
           borderRadius: 'var(--radius)',
+          boxShadow: 'var(--shadow)',
         }}
       >
-        <h2 className="text-[1.1em] font-medium">Pick up where you left off</h2>
+        <h2 className="text-[1.1em]" style={{ fontWeight: 'var(--weight-display)' }}>
+          Pick up where you left off
+        </h2>
         <ul className="mt-[1em] flex flex-col" style={{ gap: 'calc(var(--gap) * 0.6)' }}>
           {['Onboarding flow — draft two', 'Pricing page — copy pass', 'Settings — empty states'].map(
             (item) => (
