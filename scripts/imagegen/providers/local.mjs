@@ -31,7 +31,11 @@ function required(name) {
   if (!value) {
     throw new Error(
       `${name} is not set. The local provider needs the base URL of your generation server, ` +
-        'e.g. IMAGE_GEN_BASE_URL=http://127.0.0.1:8189 (see .env.example).',
+        'e.g. IMAGE_GEN_BASE_URL=http://127.0.0.1:8189 (see .env.example).\n' +
+        'If you are an agent: ask the human for this address. Do not scan ports, assume a ' +
+        'default host, or search the filesystem for a model directory — on an unfamiliar ' +
+        'machine you cannot know it, and guessing wrong wastes their GPU or hits something ' +
+        'that is not theirs.',
     )
   }
   return value.replace(/\/+$/, '')

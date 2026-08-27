@@ -3,6 +3,35 @@
 Format: version, date, then what changed and why (link a `DECISIONS.md` entry when one
 exists). Newest first.
 
+## 0.6.1 — 2026-08-27
+
+- **New constraint: no generation without asking.** An agent must ask the human before
+  running image or video generation, for *every* provider — `codex` spends a ChatGPT Plus
+  session, `openai` bills per image, and `local` occupies a GPU. One confirmation covers
+  one stated batch, never a session. Agents must also never select or switch a paid
+  provider on their own initiative. Previously nothing said this, and 0.6.0's "a direction
+  is not done until it carries real generated imagery" actively read as a licence to
+  generate unprompted.
+- **New constraint: never guess where a local generation server lives.** If
+  `IMAGE_GEN_BASE_URL` is unset, ask — no port scanning, no assumed default host, no
+  hunting the filesystem for a model directory. A fresh clone on an unfamiliar machine
+  cannot know the address, and neither necessarily does the human off the top of their
+  head. `local.mjs`'s error message now says so directly.
+- **New constraint: a direction must make a deliberate motion decision.** Either it moves,
+  with every transition built from `--motion-duration` / `--motion-ease` /
+  `--reveal-distance` and gated by `--motion-on`, or its stillness is a stated aesthetic
+  choice. A hardcoded `transition: 200ms ease` is the motion equivalent of a hardcoded hex
+  and makes the TweakBar's Motion group a lie.
+- `--motion-on` now defaults to `0` under `prefers-reduced-motion: reduce`, so any
+  direction that gates motion properly honours the OS setting for free. The TweakBar can
+  still switch it back on — the preference is the default, not a lock.
+- `scripts/imagegen/index.mjs` carries the consent rule in its header comment, and the
+  `openai` provider prints a "this call bills your API account" line on every run.
+- Rules mirrored into `AGENTS.md`, `CLAUDE.md` (subagent brief), `CONTRIBUTING.md`,
+  `README.md`, `PROMPT_TEMPLATE.md`, `src/directions/README.md` and `.env.example`.
+- See `DECISIONS.md` 2026-08-27 "Generation requires consent; motion is a required
+  decision".
+
 ## 0.6.0 — 2026-08-27
 
 - **Breaking (token shape):** `src/tokens.css` roughly tripled. New tokens:

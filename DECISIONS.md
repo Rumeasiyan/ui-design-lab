@@ -6,6 +6,55 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-08-27 — Generation requires consent; motion is a required decision
+
+**Decision:** An agent must ask the human before running any image or video generation, for
+every provider including the free-at-the-margin local one, and must never guess the address
+of a local generation server. Separately, a direction must now make a deliberate motion
+decision expressed in tokens, and `--motion-on` defaults to `0` under
+`prefers-reduced-motion`.
+
+**Why the consent rule:** the previous day's constraint said "a direction is not done until
+it carries real generated imagery" and added that the local provider has no marginal cost,
+"so there is no budget excuse". Read by an agent in a fresh clone, that is an instruction to
+generate, not permission to ask. Nothing anywhere told it to check first. The failure mode
+is concrete: someone clones this public template, points an agent at it, and the agent burns
+their ChatGPT Plus session or their API balance because a document told it imagery was
+mandatory. "Required" had to be separated from "generate unprompted" — the requirement is
+that the direction is unfinished without assets, not that an agent may spend on its own
+initiative.
+
+**Why `local` is not exempt:** it was tempting to require consent only for the providers
+that bill. Two reasons not to. It still occupies the human's GPU for minutes at a time. And
+more importantly, an agent that has just cloned the repo onto a machine has no idea whether
+a generation server exists there or where it listens — the user made exactly this point.
+An exemption would have encouraged precisely the wrong reflex: probing ports or searching
+the filesystem for a model directory. Asking is the only move that works on an unfamiliar
+machine, so the error message now says that outright instead of merely reporting a missing
+variable.
+
+**Why motion is a rule and not a suggestion:** it is the same argument as imagery. An inert
+interface reads as a screenshot; a reviewer cannot tell deliberate stillness from an
+unfinished draft, which defeats side-by-side comparison. Phrasing it as "must move" would be
+wrong — restraint is a legitimate aesthetic — so the rule is that the *decision* must be
+deliberate and, if it moves, token-driven. A hardcoded duration is treated exactly like a
+hardcoded hex: it makes the TweakBar's Motion group lie about what it controls.
+
+**Reduced motion as a default, not a lock:** the `prefers-reduced-motion` override sets
+`--motion-on: 0` in `:root`. The TweakBar writes inline styles, which beat it, so a designer
+can still switch motion on to review it. That precedence is deliberate: the OS preference
+decides what a visitor gets, not what a design tool is allowed to show.
+
+**Consequences:** these are conventions, enforced by review rather than by lint — an agent
+that ignores `AGENTS.md` can still spend money. The scripts push back where they cheaply
+can (`local.mjs` refuses to guess, `openai.mjs` announces the charge), but the real
+enforcement is that the rule now exists to point at.
+
+**Refs:** `AGENTS.md` Constraints, `CLAUDE.md`, `src/tokens.css`,
+`scripts/imagegen/providers/local.mjs`.
+
+---
+
 ## 2026-08-27 — Rich token set, per-theme tuning, assets as a requirement
 
 **Decision:** Expanded `tokens.css` to a full design system (palette, typography, shape,

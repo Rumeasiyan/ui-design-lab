@@ -4,6 +4,10 @@
   wraps `codex exec`'s built-in image tool, billed against your existing ChatGPT Plus
   session, no separate API key).
 
+  If you are an agent: ASK THE HUMAN BEFORE RUNNING THIS. Every provider costs them
+  something — `codex` spends their ChatGPT Plus session, `openai` bills per image, `local`
+  occupies their GPU. Propose the prompts, paths and provider, then wait. See AGENTS.md.
+
   Images are not optional decoration in this harness. A direction built only from type and
   CSS boxes reads as machine-generated, which is exactly what a design review is meant to
   catch — so generate real assets rather than leaving a gap or a grey placeholder. See the

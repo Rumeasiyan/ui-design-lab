@@ -30,6 +30,7 @@ instead of guessing values in a text editor.
 - [Adding a new direction](#adding-a-new-direction)
 - [Adding a screen to a direction](#adding-a-screen-to-a-direction)
 - [Assets](#assets)
+- [Motion](#motion)
 - [Video generation](#video-generation)
 - [FAQ](#faq)
 - [Project status](#project-status)
@@ -46,6 +47,7 @@ instead of guessing values in a text editor.
 | **Device preview frames** | Render any screen at mobile (390px), tablet (834px), or desktop width without resizing your browser. |
 | **Light / dark preview** | Every color token has a light-theme value. Toggle with `D` — the control sits in the harness's top bar, never inside the design being judged. |
 | **Multi-screen flows** | A direction can hold several screens (Home → Detail → Settings), listed in a left sidebar and stepped through with `↑`/`↓`. |
+| **Motion as a first-class token** | Duration, easing, and reveal distance are tokens; `--motion-on` gates everything and defaults off under `prefers-reduced-motion`. |
 | **Real assets, not placeholders** | Pluggable image generation — `codex exec` (no API key), a self-hosted local server (no per-image cost), or the OpenAI Images API. A direction is not done until it carries real imagery. |
 | **Scripted video generation** | `scripts/videogen/` with a pluggable provider dispatcher. Defaults to `manual`: no API call, no cost. |
 | **A prompt pattern that works** | `PROMPT_TEMPLATE.md` — the Aesthetic / Reference / Intent / Guardrails structure for driving an AI agent to produce genuinely distinct directions, plus a worked example. |
@@ -172,6 +174,14 @@ quietly avoids imagery so it never has to source any.
 node scripts/imagegen/index.mjs "a topographic contour-line illustration in dark-green ink" src/directions/v1/hero.png
 ```
 
+**If an AI agent is doing the work, it must ask you before running this** — for every
+provider, not just the paid one. `codex` spends your ChatGPT Plus session, `openai` bills
+per image, and `local` occupies your GPU. An agent must also never guess where a local
+generation server lives: on a machine it has just cloned onto, it cannot know, so if
+`IMAGE_GEN_BASE_URL` is unset the correct move is to ask rather than probe ports or hunt
+for a model directory. Both rules are written into
+[`AGENTS.md`](AGENTS.md) and [`CLAUDE.md`](CLAUDE.md).
+
 ### Providers
 
 Set `IMAGE_GEN_PROVIDER` in `.env` (copy from `.env.example`):
@@ -195,6 +205,31 @@ front of it.
 
 **Verification status:** `codex` and `local` are both **unverified end-to-end** — see open
 issues #2 and #13.
+
+## Motion
+
+**A direction must make a deliberate motion decision.** Same logic as imagery: either it
+moves, or its stillness is a stated aesthetic choice. What fails review is a direction that
+simply never considered motion — a completely inert interface reads as a screenshot and
+can't be judged for feel.
+
+Every transition must be built from the motion tokens:
+
+```tsx
+style={{
+  transitionDuration: 'calc(var(--motion-duration) * 220ms)',
+  transitionTimingFunction: 'var(--motion-ease)',
+}}
+className="hover:-translate-y-[calc(var(--reveal-distance)*0.15*var(--motion-on))]"
+```
+
+A hardcoded `transition: 200ms ease` is the motion equivalent of a hardcoded hex — it makes
+the TweakBar's Motion group a lie. Check by flipping Motion off: the direction must
+actually stop moving.
+
+`--motion-on` defaults to `0` under `prefers-reduced-motion: reduce`, so honouring the OS
+setting is automatic for any direction that gates its motion properly. The TweakBar can
+still switch it back on — the preference is the default, not a lock.
 
 ## Video generation
 

@@ -41,7 +41,13 @@ Rules that apply to every direction (see [`../../AGENTS.md`](../../AGENTS.md)):
 - Each direction fully commits to its own aesthetic. Never blend two in one component.
 - **Real imagery is required, not optional.** No placeholders, no stock art, and no
   quietly avoiding images so none have to be sourced — a screen of pure type and boxes
-  reads as machine-generated. Generate with `scripts/imagegen/index.mjs`.
+  reads as machine-generated. Generate with `scripts/imagegen/index.mjs`. If an agent is
+  doing the work, it must ask you before generating anything, whichever provider is set.
+- **Make a deliberate motion decision.** Either the direction moves — every transition
+  built from `--motion-duration`, `--motion-ease` and `--reveal-distance`, gated by
+  `--motion-on` — or motion is deliberately absent and that is the choice. Never hardcode
+  a duration or easing curve; it makes the TweakBar's Motion group a lie. Flip Motion off
+  and confirm the direction actually stops.
 - Size type in `em`, not `rem` or `px`, so the TweakBar's Font Scale slider moves it —
   `DeviceFrame` sets the preview's base font size from `--font-scale`.
 - Both themes have to work. Toggle light/dark (the `D` key) before calling a direction

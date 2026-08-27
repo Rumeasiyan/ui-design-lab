@@ -40,17 +40,27 @@ These are the ones a PR will be sent back for:
 4. **A direction must carry real generated imagery.** Not just "no placeholders" — a
    design that avoids imagery entirely so it never has to source any fails this too. A
    screen of pure type and boxes reads as machine-generated. Generate assets with
-   `scripts/imagegen/index.mjs`; the `local` provider costs nothing per image.
-5. **Size type in `em`, not `rem` or `px`.** `DeviceFrame` sets the preview's base font
+   `scripts/imagegen/index.mjs`.
+5. **A direction must make a deliberate motion decision.** Either it moves, with every
+   transition derived from `--motion-duration`, `--motion-ease` and `--reveal-distance`
+   and gated by `--motion-on`, or motion is deliberately absent as an aesthetic choice.
+   A hardcoded `transition: 200ms ease` is the motion equivalent of a hardcoded hex.
+   Check by flipping Motion off in the TweakBar — the direction must actually stop.
+6. **If you are working through an AI agent: it must ask you before generating anything.**
+   Every provider costs something — a subscription session, an API bill, or minutes of
+   GPU. And it must never guess where a local generation server lives; if
+   `IMAGE_GEN_BASE_URL` is unset, the answer is to ask, not to probe. Do not accept a PR
+   whose assets were generated against a hardcoded host.
+7. **Size type in `em`, not `rem` or `px`.** `DeviceFrame` sets the preview's base font
    size from `--font-scale`; a `rem` resolves against the document root and ignores the
    Font Scale slider.
-6. **Both themes must work.** Every color token needs a value in the
+8. **Both themes must work.** Every color token needs a value in the
    `:root[data-theme='light']` block as well. Press `D` and check.
-7. **Directions use `--color-*`; the harness UI uses `--chrome-*`.** Never cross them —
+9. **Directions use `--color-*`; the harness UI uses `--chrome-*`.** Never cross them —
    otherwise tuning a direction restyles the toolbar.
-8. **`VIDEO_GEN_PROVIDER` defaults to `manual`** — no API call, no cost. Don't change
+10. **`VIDEO_GEN_PROVIDER` defaults to `manual`** — no API call, no cost. Don't change
    the default; paid video providers are opt-in per project.
-9. **Never commit real API keys.** `.env` is gitignored; `.env.example` documents the
+11. **Never commit real API keys.** `.env` is gitignored; `.env.example` documents the
    shape only.
 
 ## Before you open a PR

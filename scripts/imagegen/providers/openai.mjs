@@ -24,6 +24,10 @@ export async function generate({ prompt, output, width, height }) {
     throw new Error('OPENAI_API_KEY is not set (see .env.example).')
   }
 
+  /* The only provider here that bills per call. Say so, every time, so a run that was
+     started on the agent's initiative is at least visible in the log. */
+  console.error('[imagegen] openai is a PAID provider — this call bills your API account.')
+
   const response = await fetch('https://api.openai.com/v1/images/generations', {
     method: 'POST',
     headers: {

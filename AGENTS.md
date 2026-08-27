@@ -101,8 +101,37 @@ the notes.
   source any. Why: a screen built purely from type, borders and flat colour reads as
   machine-generated, and a review that can't tell "restrained" from "unfinished" is
   worthless — which defeats the entire point of comparing directions. Generate assets with
-  `scripts/imagegen/index.mjs`; the `local` provider has no marginal cost, so there is no
-  budget excuse. Enforced by convention only — check by eye when reviewing a direction.
+  `scripts/imagegen/index.mjs` — but **ask the human first**, see the generation-consent
+  rule below. "Required" means the direction is not finished until the assets exist; it
+  does not mean generate them unprompted. Enforced by convention only — check by eye when
+  reviewing a direction.
+- **Never start image or video generation without asking the human first, for every
+  provider.** Propose the prompts, the target paths and the provider you intend to use,
+  then wait for a yes. One confirmation covers one stated batch ("these four assets") —
+  it is not standing approval for the session, and it never carries over to a different
+  provider. Why: every provider costs the human something they can see on a bill or a
+  machine. `codex` spends their ChatGPT Plus session, `openai` spends per image, and even
+  `local` occupies their GPU for minutes at a time. An agent that reads "imagery is
+  required" and starts generating has spent someone else's money to satisfy a doc.
+- **Never select or switch a paid provider on your own initiative.** `IMAGE_GEN_PROVIDER`
+  and `VIDEO_GEN_PROVIDER` are `.env` decisions the human makes. Proposing "this needs the
+  openai provider, shall I?" is fine; setting it is not.
+- **Never guess, probe or hardcode where a local generation server lives.** If
+  `IMAGE_GEN_BASE_URL` is unset, ask — do not scan ports, do not assume a default host, do
+  not go looking through the filesystem for a model directory. Why: a fresh clone on an
+  unfamiliar machine has no way to know this, and the human may not know the address off
+  the top of their head either. Asking is the only correct move. `local.mjs` already fails
+  with a clear message rather than falling back to a guess; keep it that way.
+- **A direction must make a deliberate motion decision, expressed in tokens.** Either it
+  moves — and every transition derives from `--motion-duration`, `--motion-ease` and
+  `--reveal-distance`, gated by `--motion-on` so the TweakBar toggle genuinely stops it —
+  or motion is deliberately absent and that absence is the aesthetic choice. What fails is
+  a direction that simply never considered it. Why: a completely inert interface reads as
+  a screenshot, the same way a direction with no imagery reads as machine-generated, and
+  neither can be judged for feel. A hardcoded `transition: 200ms ease` is the motion
+  equivalent of a hardcoded hex — it makes the Motion group of the TweakBar a lie.
+  Enforced by convention — flip Motion off in the TweakBar and confirm the direction
+  actually stops moving.
 - **`VIDEO_GEN_PROVIDER` defaults to `manual` (no API call, no cost).** Why: explicit
   user decision — pay-per-use video APIs are opt-in per project, not on by default. Do
   not change the default. See `scripts/videogen/providers/manual.mjs`.

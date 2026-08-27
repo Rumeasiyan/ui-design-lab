@@ -101,6 +101,19 @@
   --chrome-active: #dbd7cf;
 }
 
+/*
+  A direction's motion must be gated by --motion-on, so honouring the OS-level preference is
+  a single override rather than something every direction has to remember. The TweakBar can
+  still switch motion back on from here — an explicit inline style beats this block, which
+  is the right precedence: the preference is the default, not a lock.
+*/
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-on: 0;
+    --motion-duration: 0.001;
+  }
+}
+
 body {
   background: var(--chrome-bg);
   color: var(--chrome-fg);
