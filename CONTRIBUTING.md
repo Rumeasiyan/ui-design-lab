@@ -39,9 +39,16 @@ These are the ones a PR will be sent back for:
    one component.** Side-by-side comparison of distinct directions is the entire point.
 4. **No placeholder images, icons, or stock art in a direction.** Generate a real asset
    with `scripts/imagegen.mjs`. A gray box can't be judged for aesthetic feel.
-5. **`VIDEO_GEN_PROVIDER` defaults to `manual`** — no API call, no cost. Don't change
+5. **Size type in `em`, not `rem` or `px`.** `DeviceFrame` sets the preview's base font
+   size from `--font-scale`; a `rem` resolves against the document root and ignores the
+   Font Scale slider.
+6. **Both themes must work.** Every color token needs a value in the
+   `:root[data-theme='light']` block as well. Press `D` and check.
+7. **Directions use `--color-*`; the harness UI uses `--chrome-*`.** Never cross them —
+   otherwise tuning a direction restyles the toolbar.
+8. **`VIDEO_GEN_PROVIDER` defaults to `manual`** — no API call, no cost. Don't change
    the default; paid video providers are opt-in per project.
-6. **Never commit real API keys.** `.env` is gitignored; `.env.example` documents the
+9. **Never commit real API keys.** `.env` is gitignored; `.env.example` documents the
    shape only.
 
 ## Before you open a PR

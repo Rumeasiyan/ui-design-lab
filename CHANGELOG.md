@@ -3,6 +3,31 @@
 Format: version, date, then what changed and why (link a `DECISIONS.md` entry when one
 exists). Newest first.
 
+## 0.5.0 — 2026-08-27
+
+- **Breaking (token shape):** `src/tokens.css` gained a `:root[data-theme='light']`
+  override block and a separate `--chrome-*` token set for the harness's own UI. A
+  direction carried over from 0.4.x still renders, but any color it defines only in
+  `:root` will keep its dark value in light mode.
+- Added a light/dark toggle in the top control bar (`D`), deliberately outside the
+  rendered screen so it never becomes part of the design under review. Choice persists in
+  `localStorage`.
+- Moved the screen switcher from a horizontal bar under the tabs to a left sidebar,
+  navigated with `↑`/`↓`. `←`/`→` now step through directions. All shortcuts moved out of
+  `DirectionToggle` into one handler, `src/lib/useKeyboardNav.ts`.
+- Added three sample directions (Editorial, Brutalist, Soft), three screens each, marked
+  `sample: true` and badged in the tab bar. `scripts/remove-samples.mjs` deletes every
+  sample and scaffolds a blank `v1`.
+- Fixed: the TweakBar's Font Scale slider did nothing — nothing read `--font-scale`.
+  `DeviceFrame` now derives the preview's base font size from it, so directions must size
+  type in `em`.
+- Fixed: TweakBar held authored CSS ("8px") in state rather than a bare number, so every
+  px field rendered as "8pxpx" and fed an invalid value to its `<input type="range">`,
+  which silently fell back to the slider's midpoint. Units are now re-attached on write,
+  display, and export.
+- See `DECISIONS.md` 2026-08-27 "Left screen rail, arrow-key nav, light theme, shipped
+  samples", issue #11.
+
 ## 0.4.0 — 2026-08-26
 
 - Renamed `design-template` -> `ui-design-lab` (repo, package name, docs). Open-sourced

@@ -6,6 +6,49 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-08-27 — Left screen rail, arrow-key nav, light theme, shipped samples
+
+**Decision:** Four harness changes landed together because they share a surface: the
+screen switcher moved from a horizontal bar under the tabs to a left sidebar driven by
+`↑`/`↓`; `←`/`→` now cycle directions; a light/dark toggle sits in the top control bar;
+and the template ships three sample directions (Editorial, Brutalist, Soft) marked
+`sample: true`, removable with `scripts/remove-samples.mjs`.
+
+**Why:** Requested. The screens bar read as a second row of tabs competing with the
+direction tabs; as a left rail it's clearly subordinate, and a vertical list is what
+`↑`/`↓` implies. Samples exist because an empty harness gives a new user nothing to judge
+their first direction against — but a sample left in place ruins the comparison, so it is
+marked three ways (registry flag, badge in the tab bar, header comment in every file) and
+removable in one command.
+
+**Consequences, and the things that forced themselves:**
+
+- **All shortcuts had to centralise.** `DirectionToggle` owned a `keydown` listener;
+  screens now need one too, and two listeners racing over the arrow keys is a bug waiting
+  to happen. Everything lives in `src/lib/useKeyboardNav.ts`. The INPUT/TEXTAREA guard is
+  load-bearing beyond text fields — TweakBar's sliders are `<input type="range">`, driven
+  by the arrow keys, so without it nudging a slider would also change direction.
+- **The harness chrome needed its own tokens.** Every bar and panel was styled with
+  hardcoded `white/10`, `black/40`, etc. Invisible on a light background. Added a
+  `--chrome-*` set, kept strictly separate from the `--color-*` set the directions use —
+  otherwise tuning a direction would restyle the toolbar.
+- **`--font-scale` was a slider wired to nothing.** No code read it. Rather than delete
+  the control, `DeviceFrame` now sets the preview's base `font-size` from it, which makes
+  `em` the required unit for type inside a direction — a `rem` resolves against the
+  document root and would ignore it. The scale stops at the frame boundary on purpose, so
+  the chrome never resizes with the design.
+
+**Rejected alternatives:** Putting the theme toggle inside each direction (it would become
+part of the design being judged, and every direction would have to implement it); scoping
+`--font-scale` to the document root (would scale the toolbar too); a `sample/` top-level
+folder instead of a registry flag (the flag lets the removal script find entries and
+folders from one source, and survives a user renaming a folder).
+
+**Refs:** issue #11, `src/lib/useKeyboardNav.ts`, `src/lib/theme.ts`, `src/tokens.css`,
+`scripts/remove-samples.mjs`, `src/directions/README.md`.
+
+---
+
 ## 2026-08-26 — Renamed to `ui-design-lab`, went public under MIT
 
 **Decision:** Renamed the repo, the local working folder, and the package from

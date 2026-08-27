@@ -40,10 +40,12 @@ instead of guessing values in a text editor.
 
 | Feature | What you get |
 |---|---|
-| **Side-by-side design directions** | One folder per aesthetic direction. Switch with a tab bar, number keys `1`-`9`, or press `G` for a grid showing every direction at once. |
+| **Side-by-side design directions** | One folder per aesthetic direction. Switch with a tab bar, number keys `1`-`9`, `←`/`→`, or press `G` for a grid showing every direction at once. |
+| **Three worked samples to start from** | Editorial, Brutalist, and Soft directions — three screens each, built from the same tokens — showing what a finished direction looks like. One command deletes them all when you're ready to design. |
 | **Live design-token tuning** | A TweakBar of sliders/toggles editing the real CSS custom properties in `src/tokens.css` at runtime — radius, gap, font scale, motion. "Copy CSS" exports the tuned values back into token shape. |
 | **Device preview frames** | Render any screen at mobile (390px), tablet (834px), or desktop width without resizing your browser. |
-| **Multi-screen flows** | A direction can hold several screens (Home → Detail → Settings), navigated by a secondary nav bar. |
+| **Light / dark preview** | Every color token has a light-theme value. Toggle with `D` — the control sits in the harness's top bar, never inside the design being judged. |
+| **Multi-screen flows** | A direction can hold several screens (Home → Detail → Settings), listed in a left sidebar and stepped through with `↑`/`↓`. |
 | **Scripted image generation** | `scripts/imagegen.mjs` wraps `codex exec`'s image tool — real generated art in your directions, never a gray placeholder box. |
 | **Scripted video generation** | `scripts/videogen/` with a pluggable provider dispatcher. Defaults to `manual`: no API call, no cost. |
 | **A prompt pattern that works** | `PROMPT_TEMPLATE.md` — the Aesthetic / Reference / Intent / Guardrails structure for driving an AI agent to produce genuinely distinct directions, plus a worked example. |
@@ -73,7 +75,28 @@ pnpm install
 pnpm dev
 ```
 
-Open the URL Vite prints (default `http://localhost:5173`).
+Open the URL Vite prints (default `http://localhost:5173`). You'll land on the three
+sample directions.
+
+When you're ready to design your own, delete the samples:
+
+```bash
+node scripts/remove-samples.mjs
+```
+
+That removes all three sample folders and their registry entries and scaffolds a blank
+`v1`. Do it before you start — a sample sitting in the tab bar next to your real work
+makes the side-by-side comparison meaningless.
+
+### Keyboard
+
+| Key | Action |
+|---|---|
+| `1`-`9` | Jump to that direction |
+| `←` / `→` | Previous / next direction |
+| `↑` / `↓` | Previous / next screen in the active direction |
+| `G` | All-directions grid |
+| `D` | Light / dark |
 
 Other scripts: `pnpm build`, `pnpm lint`, `pnpm preview`.
 
@@ -84,16 +107,22 @@ For the full screen-by-screen walkthrough of running a session, see
 
 - **`src/tokens.css`** — single source of design truth. Every color/font/radius/spacing
   a direction uses should be a CSS custom property here, not a hardcoded value in a
-  component.
-- **`src/directions/`** — one folder per aesthetic direction (`v1/`, `v2/`, ...), each
-  committed to its own aesthetic and made up of one or more **screens** (`Page.tsx` as
-  the default, more under `screens/<screenId>.tsx`). Register new ones in
-  `src/lib/directions.ts`.
+  component. Holds two groups: the `--color-*`/`--font-*`/`--radius`/`--gap`/`--motion-*`
+  tokens the directions use, and a separate `--chrome-*` set for the harness's own UI.
+  Both have a full light-theme override block.
+- **`src/directions/`** — one folder per aesthetic direction, each committed to its own
+  aesthetic and made up of one or more **screens** (`Page.tsx` as the default, more under
+  `screens/<screenId>.tsx`). Register new ones in `src/lib/directions.ts`. Ships with
+  three `sample: true` directions — see [`src/directions/README.md`](src/directions/README.md).
 - **`src/components/DirectionToggle.tsx`** — tab bar to switch/compare directions live.
   Number keys 1-9 jump directly to a direction, `G` toggles the all-directions grid view.
   A filter input appears once there are more directions than fit comfortably (>6).
-- **`src/components/ScreenNav.tsx`** — secondary nav bar for switching between a
-  direction's screens; only shows up when a direction has more than one.
+- **`src/components/ScreenNav.tsx`** — left sidebar listing the active direction's
+  screens (`↑`/`↓` to move); only shows up when a direction has more than one.
+- **`src/lib/useKeyboardNav.ts`** — every keyboard shortcut, in one handler, so
+  directions and screens can't disagree about the arrow keys.
+- **`src/lib/theme.ts`** — light/dark state; flips a `data-theme` attribute that
+  `tokens.css` overrides against.
 - **`src/components/DeviceFrame.tsx`** — mobile/tablet/desktop preview frames.
 - **`src/components/TweakBar.tsx`** — live-adjust tokens (radius, gap, font scale,
   motion) by eye; "Copy CSS" exports the current values back into `tokens.css` shape.
@@ -105,7 +134,9 @@ For the full screen-by-screen walkthrough of running a session, see
    `src/lib/directions.ts` in one step.
 2. Fill in the page, binding every visual value to a `var(--token-name)` from
    `tokens.css` (add new tokens there and to `TweakBar.tsx`'s `FIELDS` list if you need
-   new tunable knobs).
+   new tunable knobs). Size type in `em` — `DeviceFrame` derives the preview's base font
+   size from `--font-scale`, and a `rem` would ignore the slider. Check the result in
+   both themes.
 3. Same intent/guardrails across all directions in a session; each direction fully
    commits to its own aesthetic — never blend two directions in one component. See
    [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md) for the prompt pattern to drive this.
@@ -119,9 +150,9 @@ node scripts/new-screen.mjs v2 detail --label "Detail"
 ```
 
 Creates `src/directions/v2/screens/detail.tsx` and appends it to that direction's
-`screens` array in `src/lib/directions.ts`. Once a direction has 2+ screens, a
-`ScreenNav` bar appears under the direction tab bar to switch between them — number-key
-shortcuts still select *directions*, not screens.
+`screens` array in `src/lib/directions.ts`. Once a direction has 2+ screens, the
+`ScreenNav` sidebar appears on the left to switch between them, driven by `↑`/`↓`.
+Number keys and `←`/`→` still select *directions*, not screens.
 
 ## Image generation
 
@@ -212,6 +243,21 @@ it.
 
 Yes. It is MIT licensed — clone it, modify it, ship client work from it. See
 [`LICENSE`](LICENSE).
+
+### How do I delete the sample directions?
+
+`node scripts/remove-samples.mjs`. It deletes every direction marked `sample: true` —
+folders and registry entries — and scaffolds a blank `v1` if that leaves nothing behind.
+Directions you created yourself are never touched. Pass `--dry-run` to see what it would
+remove first.
+
+### Does it support light mode?
+
+Yes. `src/tokens.css` defines a full `:root[data-theme="light"]` override for every color
+token, and the harness's own UI has a matching `--chrome-*` set, so the tool stays legible
+too. Toggle with `D` or the button in the top bar. The toggle deliberately lives in the
+harness chrome rather than inside a rendered screen, so it never becomes part of the
+design you're evaluating.
 
 ### How do I add my own design tokens?
 

@@ -74,15 +74,16 @@ writeFileSync(
       style={{ borderRadius: 'var(--radius)' }}
     >
       <h1
-        className="text-5xl font-bold"
+        className="text-[3em] font-bold"
         style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-display)' }}
       >
         ${label}
       </h1>
       <p style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-mono)' }}>
         Fill in from your prompt's Aesthetic/Placement (see PROMPT_TEMPLATE.md). Bind every
-        color/font/radius to the CSS custom properties in src/tokens.css. If this design
-        needs an image, generate a real one with scripts/imagegen.mjs before shipping —
+        color/font/radius to the CSS custom properties in src/tokens.css, and size type in
+        em so the TweakBar's Font Scale slider moves it. Check the design in both themes
+        (press D). If it needs an image, generate a real one with scripts/imagegen.mjs —
         never leave a placeholder image/icon/stock photo in.
       </p>
     </div>

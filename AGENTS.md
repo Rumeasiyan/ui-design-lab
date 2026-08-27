@@ -20,17 +20,21 @@ the notes.
 
 | Area | When you need it |
 |---|---|
-| `src/tokens.css` | Any visual value — colors, fonts, radius, gap, motion. Single source of design truth. |
+| `src/tokens.css` | Any visual value — colors, fonts, radius, gap, motion. Single source of design truth. Also holds the `--chrome-*` set for the harness UI and the light-theme override block. |
 | `src/directions/<id>/Page.tsx` | A direction's default ("home") screen. |
 | `src/directions/<id>/screens/<screenId>.tsx` | Additional screens within a direction. |
 | `src/lib/directions.ts` | Registering a direction and its `screens` array (id, number-key shortcut, lazy imports). |
-| `src/components/DirectionToggle.tsx` | Direction tab bar; number-key (1-9) and `G` grid-view shortcuts; filter input once there are >6 directions. |
-| `src/components/ScreenNav.tsx` | Secondary nav bar for a direction's screens (only renders when a direction has >1 screen). |
+| `src/components/DirectionToggle.tsx` | Direction tab bar, SAMPLE badges, filter input once there are >6 directions. Shortcuts are NOT here — see `useKeyboardNav.ts`. |
+| `src/components/ScreenNav.tsx` | Left sidebar listing a direction's screens (only renders when a direction has >1 screen). |
+| `src/lib/useKeyboardNav.ts` | Every keyboard shortcut. One handler — directions and screens share the arrow keys. |
+| `src/lib/theme.ts` + `src/components/ThemeToggle.tsx` | Light/dark state and its top-bar control. |
+| `src/directions/README.md` | What the shipped sample directions are and how to delete them. |
 | `src/components/DeviceFrame.tsx` | Mobile/tablet/desktop preview frame widths. |
 | `src/components/TweakBar.tsx` | Live token tuning UI; `FIELDS` list must match `tokens.css`. |
 | `PROMPT_TEMPLATE.md` | Starting a design session — the Aesthetic/Reference/Intent/Guardrails pattern + worked example. |
 | `scripts/new-direction.mjs` | Scaffolding a new direction (folder + `Page.tsx` "home" screen + registry entry) in one command. |
 | `scripts/new-screen.mjs` | Scaffolding an additional screen into an existing direction. |
+| `scripts/remove-samples.mjs` | Deleting the shipped sample directions (everything marked `sample: true`). |
 | `scripts/imagegen.mjs` | Image generation via `codex exec` (ChatGPT Plus session, no API key). |
 | `scripts/videogen/index.mjs` + `providers/*.mjs` | Video generation dispatcher + per-provider HTTP calls. |
 | `USAGE.md` | Step-by-step walkthrough of running a design session (clone, tabs, tuning, generating assets). |
@@ -73,6 +77,23 @@ the notes.
   component.** Why: the point of the harness is side-by-side comparison of distinct
   directions — blending defeats that. Enforced by convention (`src/lib/directions.ts`
   comment, `README.md`).
+- **The harness ships three `sample: true` directions; they are examples, not content.**
+  Never build on top of one, and never mark a real direction `sample: true` —
+  `scripts/remove-samples.mjs` deletes every entry carrying that flag, folder and all.
+  Why: users need to see a finished direction before writing one, but a sample left in the
+  tab bar next to real work ruins the comparison. Enforced by the SAMPLE badge in
+  `DirectionToggle` and the removal script.
+- **A direction never references a `--chrome-*` token, and the harness UI never uses a
+  `--color-*` one.** Why: the chrome is the tool, the `--color-*` set is the design under
+  review; mixing them means tuning a direction restyles the toolbar. Enforced by
+  convention — check by eye.
+- **Type in a direction is sized in `em`, never `rem`/`px`.** Why: `DeviceFrame` sets the
+  preview's base font-size from `--font-scale`; a `rem` resolves against the document root
+  and silently ignores the Font Scale slider. Enforced by convention.
+- **Every color token needs a value in the `:root[data-theme='light']` block too.** Why: a
+  token defined only in `:root` keeps its dark value in light mode, which usually reads as
+  an invisible or blown-out element rather than an obvious bug. Enforced by convention —
+  press `D` and look.
 - **Never use placeholder images/icons/stock art in a direction.** If a direction's
   design calls for an image, generate a real one with `scripts/imagegen.mjs` (wraps
   `codex exec`'s image tool, billed against the ChatGPT Plus session) before calling the
@@ -111,8 +132,11 @@ No test suite exists yet.
   `src/directions/<id>/`. A direction has one or more screens (`Screen[]` in
   `src/lib/directions.ts`), each lazy-loaded via `React.lazy`; `screens[0]` is
   conventionally `Page.tsx`, additional screens live under `screens/<screenId>.tsx`.
-- Number-key shortcuts (1-9) select a *direction*, not a screen — a direction's screens
-  are navigated via `ScreenNav`, which only renders when it has more than one.
+- Number-key shortcuts (1-9) and `←`/`→` select a *direction*; `↑`/`↓` move between the
+  active direction's screens via the `ScreenNav` sidebar, which only renders when it has
+  more than one. All shortcuts live in `src/lib/useKeyboardNav.ts` — do not add a second
+  `keydown` listener elsewhere, and keep the INPUT/TEXTAREA guard: TweakBar's sliders are
+  `<input type="range">`, which the arrow keys drive.
 - New tunable design values go in **both** `src/tokens.css` (as a custom property) and
   `TweakBar.tsx`'s `FIELDS` list — adding to only one breaks the tuning UI or the export.
 - Commit messages: clear, imperative subject lines; body only when the "why" isn't
@@ -122,7 +146,7 @@ No test suite exists yet.
 
 - Canonical source: `package.json` `version` field. No separate build number (this is a
   web app served/built via Vite, not a platform with its own build-number concept).
-- Current version: `0.4.0` (pre-1.0, template still stabilizing — see open `unverified`
+- Current version: `0.5.0` (pre-1.0, template still stabilizing — see open `unverified`
   issues).
 - Update **per completed change** (not batched at release time), per semver:
   - Breaking change to the harness (e.g. token-shape change that breaks existing

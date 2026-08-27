@@ -1,35 +1,79 @@
 @import "tailwindcss";
 
 /*
-  Single source of design truth. Every color/font/radius/spacing value a direction
-  uses should be a CSS custom property defined here, not a hardcoded value in a component. The TweakBar reads/writes
-  these at runtime; "Copy CSS" exports the current values back into this shape so a tuning
-  session can be pasted back in permanently.
+  Single source of design truth. Every color/font/radius/spacing value a direction uses
+  should be a CSS custom property defined here, not a hardcoded value in a component. The
+  TweakBar reads/writes these at runtime; "Copy CSS" exports the current values back into
+  this shape so a tuning session can be pasted back in permanently.
+
+  Two groups of tokens:
+    --color-* / --font-* / --radius / --gap / --motion-*   the DIRECTIONS' design tokens
+    --chrome-*                                             the HARNESS's own UI
+
+  Keep them separate. A direction should never reference a --chrome-* token: the chrome is
+  the tool, not the design. The chrome tokens exist only so the harness itself stays legible
+  when the light theme is on.
+
+  The light theme is a full override block below. Every --color-* and --chrome-* token
+  defined in :root must also be defined there, or it will silently keep its dark value.
 */
 :root {
-  /* color */
+  color-scheme: dark;
+
+  /* color — the direction's palette */
   --color-bg: #0a0a0a;
+  --color-surface: #151515;
   --color-fg: #f5f5f5;
-  --color-accent: #ff4d4d;
   --color-muted: #8a8a8a;
+  --color-border: #2a2a2a;
+  --color-accent: #ff4d4d;
+
+  /* color — the harness chrome (tab bars, sidebars, tweak panel) */
+  --chrome-bg: #050505;
+  --chrome-bg-alt: #101010;
+  --chrome-fg: #f5f5f5;
+  --chrome-muted: #7c7c7c;
+  --chrome-border: #262626;
+  --chrome-hover: #1c1c1c;
+  --chrome-active: #303030;
 
   /* type */
   --font-display: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --font-scale: 1;
+  --font-scale: 1; /* read by DeviceFrame as the preview's base font-size multiplier */
 
   /* shape */
   --radius: 8px;
   --gap: 16px;
 
   /* motion */
-  --motion-on: 1; /* 0 or 1, read by components to skip transitions */
+  --motion-on: 1; /* 0 or 1 — multiply a transform/duration by it to gate motion off */
   --motion-duration: 1; /* multiplier */
   --reveal-distance: 22px;
 }
 
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --color-bg: #fbfaf8;
+  --color-surface: #ffffff;
+  --color-fg: #14110e;
+  --color-muted: #6b6660;
+  --color-border: #e3ded6;
+  --color-accent: #d92f2f;
+
+  --chrome-bg: #ffffff;
+  --chrome-bg-alt: #f3f1ed;
+  --chrome-fg: #14110e;
+  --chrome-muted: #78726b;
+  --chrome-border: #e0dcd4;
+  --chrome-hover: #eae7e1;
+  --chrome-active: #dbd7cf;
+}
+
 body {
-  background: var(--color-bg);
-  color: var(--color-fg);
+  background: var(--chrome-bg);
+  color: var(--chrome-fg);
   font-family: var(--font-display);
 }
