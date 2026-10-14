@@ -6,6 +6,30 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-10-14 - Visuals first: show the work, do not make people read it
+
+**Decision:** Added the "Show, don't tell" constraint. A screen's main state must be
+carried by a visual of the real-world object (map, route, document, building, connection,
+stack), with numbers and tables in support. Mirrored in `CONTRIBUTING.md`,
+`PROMPT_TEMPLATE.md` and `README.md`.
+
+**Why:** Requested after a client design session for an operations product used by
+clerks and field officers rather than analysts. The reference work that read best
+(logistics route trackers, warehouse and terminal dashboards, a real-estate showroom CRM)
+wins because a person sees the truck loaded, the container lifted or the plane mid-route
+and understands the state at once. Counters and charts make the user translate a number
+back into the thing it describes; a picture of the thing skips that step, and it is more
+enjoyable to use.
+
+**Consequences:** Directions now need illustration and motion work, not only layout,
+which leans on the asset and motion rules above. Where a project has a page-weight budget,
+prefer inline SVG and CSS, keep generated imagery small and cached, and always keep text
+equivalents for accessibility.
+
+**Refs:** issue #15, `AGENTS.md` Constraints.
+
+---
+
 ## 2026-08-27 — Generation requires consent; motion is a required decision
 
 **Decision:** An agent must ask the human before running any image or video generation, for

@@ -31,6 +31,7 @@ instead of guessing values in a text editor.
 - [Adding a screen to a direction](#adding-a-screen-to-a-direction)
 - [Assets](#assets)
 - [Motion](#motion)
+- [Visuals first](#visuals-first)
 - [Video generation](#video-generation)
 - [FAQ](#faq)
 - [Project status](#project-status)
@@ -230,6 +231,16 @@ actually stop moving.
 `--motion-on` defaults to `0` under `prefers-reduced-motion: reduce`, so honouring the OS
 setting is automatic for any direction that gates its motion properly. The TweakBar can
 still switch it back on — the preference is the default, not a lock.
+
+## Visuals first
+
+**Show, don't tell.** A screen should be understood by looking at it. The hero of every
+screen is a visual of the real thing it is about: a map with the places on it, a route
+with the item travelling along it, a document or stamp that changes state, a building
+filled to its value, two things connecting when they match. Numbers, tables and charts
+support that picture; they are never the hero. Moving parts carry the change, built from
+the motion tokens. Every visual keeps a text equivalent, and colour is never the only
+signal. To check a screen, cover the text with your hand: the state must still be obvious.
 
 ## Video generation
 

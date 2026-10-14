@@ -122,6 +122,21 @@ the notes.
   unfamiliar machine has no way to know this, and the human may not know the address off
   the top of their head either. Asking is the only correct move. `local.mjs` already fails
   with a clear message rather than falling back to a guess; keep it that way.
+- **Show, don't tell: a screen is read by looking, not by reading.** Every screen's main
+  question ("what needs me now?", "where is this order?", "is this paid?") must be
+  answered by a visual of the real-world thing it is about, before any number, table or
+  chart: a map with the places on it, a route with the item travelling along it, a
+  document or stamp that changes state, a parcel or building filled to its value, two
+  things connecting when they match, a stack that grows or empties. Numbers and text
+  support the visual; they never replace it. Moving parts show change (progress travels,
+  matches snap together, a stamp lands, a queue drains), built from the motion tokens and
+  gated by `--motion-on`. A plain grid of counters, a bar chart or a data table as the
+  hero of a screen fails review. Why: most people using real products are not analysts;
+  they understand a picture of their work at a glance and learn it without training, and
+  a screen that has to be read is a screen that gets misread. Accessibility still holds:
+  every visual carries a text equivalent (`<title>`, caption, or visually hidden text)
+  and colour is never the only signal. Enforced by convention: cover the text with your
+  hand and check the state is still obvious.
 - **A direction must make a deliberate motion decision, expressed in tokens.** Either it
   moves — and every transition derives from `--motion-duration`, `--motion-ease` and
   `--reveal-distance`, gated by `--motion-on` so the TweakBar toggle genuinely stops it —

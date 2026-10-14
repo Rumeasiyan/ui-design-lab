@@ -22,7 +22,8 @@ Guardrails: always [constants]. Never [bans].
 - **Intent** — the emotional/functional goal, tied to a real outcome ("a founder should
   think X within 3 seconds"), not just an adjective.
 - **Guardrails** — explicit allow/ban lists. Vague taste doesn't transfer; a concrete
-  "never gradient, never Inter-only" does.
+  "never gradient, never Inter-only" does. Always include the visuals-first rule from
+  `AGENTS.md`: the hero of every screen is a picture of the real thing, not a counter or chart.
 
 ## Multi-direction session template
 
