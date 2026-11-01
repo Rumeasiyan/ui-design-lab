@@ -6,6 +6,48 @@ reversals. Not routine implementation detail (that's visible in the code/diff al
 
 ---
 
+## 2026-11-01 - Inspiration board before any direction
+
+**Decision:** A session now starts with an inspiration board, not with directions. The
+agent fetches references (Dribbble search results for terms drawn from the product's
+domain and users, plus optional public design-system pages) with
+`scripts/inspiration/index.mjs`, groups them into 4 to 5 style families with numbered
+tiles, asks which families the human likes, then which tiles inside a family that mixes
+styles, and only then builds 2 to 3 directions from the picks.
+
+**Why:** In a real session the agent built three directions straight from a written brief
+and the human rejected all three, then asked to see inspiration first. A board of about 30
+references in 4 or 5 families, followed by one narrowing question within the chosen
+family, reached a liked direction in two rounds. People recognise what they like far more
+reliably than they can put it into words, and a direction is the most expensive thing a
+session produces, so it should be built only once there is a visual target.
+
+**How it fetches:** plain HTTP requests to Dribbble get a bot-challenge page, so the
+script renders pages with local headless Chrome (`--dump-dom`) using a normal desktop
+user agent and a throwaway profile inside the output folder (with the human's real
+profile, Chrome can hand off to the running instance and output nothing). Every Chrome
+call is killed after a timeout because some pages never finish loading. No new npm
+dependency: Node, Chrome and curl only. Rejected: a Dribbble API key (needs an account
+and app registration for something a public search page already shows) and a headless
+browser library such as Puppeteer (a heavy dependency for one command).
+
+**Grouping is a judgement, not an algorithm:** the script cannot tell "calm editorial"
+from "dense operational", so it writes `families.json` with every tile unsorted and the
+agent (or a human) edits it after looking at the images. The board is rebuilt from that
+file.
+
+**Copyright:** the images belong to their authors. `inspiration/` is gitignored and the
+docs forbid committing it or putting a reference image into a direction. Fetching is
+limited to public pages with no sign-in.
+
+**Consequences:** Dribbble's markup can change and break the parser; the script then
+reports "0 found" rather than failing silently. The default Chrome path is the macOS one;
+other platforms set `CHROME_PATH`.
+
+**Refs:** issue #16, `AGENTS.md` Constraints, `USAGE.md` section 4.
+
+---
+
 ## 2026-10-14 - Visuals first: show the work, do not make people read it
 
 **Decision:** Added the "Show, don't tell" constraint. A screen's main state must be

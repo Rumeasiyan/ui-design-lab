@@ -32,6 +32,7 @@ the notes.
 | `src/components/DeviceFrame.tsx` | Mobile/tablet/desktop preview frame widths. |
 | `src/components/TweakBar.tsx` | Live token tuning UI; `FIELDS` list must match `tokens.css`. |
 | `PROMPT_TEMPLATE.md` | Starting a design session — the Aesthetic/Reference/Intent/Guardrails pattern + worked example. |
+| `scripts/inspiration/index.mjs` | Step 0 of a session: fetch Dribbble references and design-system screenshots into a gitignored `inspiration/` board, grouped by the families in `inspiration/families.json`. Run as `pnpm inspiration fetch "term" ...` then `pnpm inspiration board`. |
 | `scripts/new-direction.mjs` | Scaffolding a new direction (folder + `Page.tsx` "home" screen + registry entry) in one command. |
 | `scripts/new-screen.mjs` | Scaffolding an additional screen into an existing direction. |
 | `scripts/remove-samples.mjs` | Deleting the shipped sample directions (everything marked `sample: true`). |
@@ -70,6 +71,21 @@ the notes.
 
 ## Constraints
 
+- **No direction is built until the human has seen an inspiration board and said what
+  they like.** Before scaffolding any direction, collect references with
+  `scripts/inspiration/index.mjs` (search terms from the product's domain and users, not
+  from style words), group them into 4 to 5 style families with numbered tiles, ask which
+  families the human likes, then which tiles within a family that mixes styles, and only
+  then build 2 to 3 directions from the picks, each direction's `sub` label naming its
+  source tiles (e.g. "Calm editorial (A1, A4)"). Why: directions built straight from a
+  written brief get rejected wholesale, wasting the most expensive part of the session;
+  people recognise what they like far more reliably than they can describe it, and a
+  board plus one narrowing question converges in about two rounds. Full steps in
+  `USAGE.md` section 4. Enforced by convention.
+- **Never commit the `inspiration/` folder, and never put a reference image into a
+  direction.** The images are other people's copyrighted work, fetched for viewing only.
+  `inspiration/` is gitignored; keep it that way. Match a reference's feel, never copy or
+  trace it.
 - **`tokens.css` is the single source of design truth.** Every color/font/radius/spacing
   a direction uses must be a CSS custom property there, never hardcoded in a component.
   Why: the TweakBar and "Copy CSS" export only work if every visual value is a token.
@@ -202,7 +218,7 @@ No test suite exists yet.
 
 - Canonical source: `package.json` `version` field. No separate build number (this is a
   web app served/built via Vite, not a platform with its own build-number concept).
-- Current version: `0.6.0` (pre-1.0, template still stabilizing — see open `unverified`
+- Current version: `0.7.0` (pre-1.0, template still stabilizing; see open `unverified`
   issues).
 - Update **per completed change** (not batched at release time), per semver:
   - Breaking change to the harness (e.g. token-shape change that breaks existing

@@ -13,3 +13,7 @@ that get violated by default instinct, in order of how much they cost to get wro
    motion included.
 4. **`VIDEO_GEN_PROVIDER` defaults to `manual`** and stays there unless the human says
    otherwise.
+5. **No direction before an inspiration board.** Fetch references with
+   `scripts/inspiration/index.mjs`, group them into 4 to 5 families, ask the human which
+   families and tiles they like, and only then build directions from the picks. Never
+   commit `inspiration/` (other people's copyrighted images).

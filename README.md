@@ -27,6 +27,7 @@ instead of guessing values in a text editor.
 - [Who it's for](#who-its-for)
 - [Quick start](#quick-start)
 - [How it's organized](#how-its-organized)
+- [Inspiration first](#inspiration-first)
 - [Adding a new direction](#adding-a-new-direction)
 - [Adding a screen to a direction](#adding-a-screen-to-a-direction)
 - [Assets](#assets)
@@ -51,6 +52,7 @@ instead of guessing values in a text editor.
 | **Motion as a first-class token** | Duration, easing, and reveal distance are tokens; `--motion-on` gates everything and defaults off under `prefers-reduced-motion`. |
 | **Real assets, not placeholders** | Pluggable image generation — `codex exec` (no API key), a self-hosted local server (no per-image cost), or the OpenAI Images API. A direction is not done until it carries real imagery. |
 | **Scripted video generation** | `scripts/videogen/` with a pluggable provider dispatcher. Defaults to `manual`: no API call, no cost. |
+| **Inspiration before design** | `pnpm inspiration` pulls Dribbble references and design-system screenshots into a local board of numbered tiles grouped by style family, so the human picks what they like before any direction is built. |
 | **A prompt pattern that works** | `PROMPT_TEMPLATE.md` — the Aesthetic / Reference / Intent / Guardrails structure for driving an AI agent to produce genuinely distinct directions, plus a worked example. |
 
 ## Who it's for
@@ -129,6 +131,30 @@ For the full screen-by-screen walkthrough of running a session, see
 - **`src/components/DeviceFrame.tsx`** — mobile/tablet/desktop preview frames.
 - **`src/components/TweakBar.tsx`** — live-adjust tokens (radius, gap, font scale,
   motion) by eye; "Copy CSS" exports the current values back into `tokens.css` shape.
+
+## Inspiration first
+
+**No direction is built until the human has seen references and said what they like.**
+Directions written straight from a brief tend to be rejected all at once; a board of about
+30 references in 4 to 5 style families, plus one narrowing question, usually reaches a
+liked direction in two rounds.
+
+```bash
+pnpm inspiration fetch "patient portal" "appointment booking" --per-term 12 \
+  --url https://design-system.example.org/
+# group the tiles into families in inspiration/families.json, then:
+pnpm inspiration board
+open inspiration/index.html
+```
+
+The script renders Dribbble search pages in local headless Chrome (plain HTTP gets a bot
+challenge), downloads thumbnails with curl, optionally screenshots public design-system
+pages, and writes a board with tiles numbered A1, A2, B1... linking back to each source.
+Needs Google Chrome and curl; set `CHROME_PATH` if Chrome is elsewhere. Walkthrough in
+[`USAGE.md`](USAGE.md) section 4.
+
+**The images are other people's copyrighted work.** `inspiration/` is gitignored: look at
+them, never commit them, never put one in a direction.
 
 ## Adding a new direction
 

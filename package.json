@@ -1,6 +1,6 @@
 {
   "name": "ui-design-lab",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "description": "Compare multiple UI design directions side by side with live design-token tuning, device preview frames, and scripted AI image/video generation. A Vite + React 19 + Tailwind v4 template for AI-assisted UI/UX design sessions.",
   "keywords": [
@@ -39,7 +39,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "inspiration": "node scripts/inspiration/index.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

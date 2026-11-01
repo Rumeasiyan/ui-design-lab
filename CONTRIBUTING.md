@@ -67,6 +67,11 @@ These are the ones a PR will be sent back for:
    the default; paid video providers are opt-in per project.
 12. **Never commit real API keys.** `.env` is gitignored; `.env.example` documents the
    shape only.
+13. **Inspiration before directions.** No direction is built until the human has seen an
+    inspiration board (`scripts/inspiration/index.mjs`, see `USAGE.md` section 4) and said
+    which families and tiles they like. The `inspiration/` folder holds other people's
+    copyrighted images: it is gitignored, and a PR that commits it or copies a reference
+    image into a direction will be closed.
 
 ## Before you open a PR
 

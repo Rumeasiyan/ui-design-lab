@@ -40,7 +40,7 @@ The app (`src/App.tsx`) has two top bars and three columns:
   every direction at once, side-by-side. Once there are more than 6 directions, a filter
   input appears — type to narrow the tabs shown by label/subtitle (shortcuts still work
   on the full, unfiltered set). Directions marked `sample: true` carry a red **SAMPLE**
-  badge — those are the template's examples, not your work (see step 3).
+  badge: those are the template's examples, not your work (see section 3).
 - **Control bar** — names the active direction, and holds the light/dark toggle (`D`)
   and the mobile/tablet/desktop switch. Both are *harness* controls: the theme toggle
   lives up here, never inside a rendered screen, so it never becomes part of the design
@@ -88,9 +88,55 @@ That removes their folders and registry entries and scaffolds a blank `v1` in th
 place. Do it before you start designing: a sample sitting in the tab bar next to your
 real work makes the side-by-side comparison meaningless.
 
-## 4. Prompting for a direction
+## 4. Inspiration first (before any direction)
 
-Start from **[`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md)** — the actual fill-in-the-blanks
+Do not build a direction until you have seen real references and said what you like. A
+written brief is a poor predictor of taste: directions built straight from one tend to be
+rejected wholesale, while a board of about 30 references, followed by one narrowing
+question, usually reaches a liked direction in two rounds.
+
+1. **Pick search terms from the product, not from styles.** Its domain and its users:
+   for a clinic booking app, "clinic booking app", "patient portal", "appointment
+   calendar"; for an internal tool, "admin dashboard", "inventory management". Two to
+   four terms is enough. Optionally add a few public design-system pages that suit the
+   audience.
+2. **Fetch the references and build the board:**
+   ```bash
+   pnpm inspiration fetch "clinic booking app" "patient portal" --per-term 12 \
+     --url https://design-system.example.org/
+   ```
+   This writes `inspiration/` (gitignored): `tiles.json` (every tile, with the shot's
+   title and alt text), `img/`, `families.json`, `labels.json` (board label to tile id)
+   and `index.html`. Needs Google Chrome and curl; set `CHROME_PATH` if Chrome is not at
+   the default macOS location.
+3. **Group into 4 to 5 style families.** Look at the images (and the titles in
+   `tiles.json`), then edit `inspiration/families.json`:
+   ```json
+   { "title": "Clinic booking: inspiration",
+     "families": [
+       { "name": "Calm editorial", "note": "serif headings, lots of white", "tiles": ["25586920", "site1"] },
+       { "name": "Dense operational", "note": "dark, tables, side rail", "tiles": ["24946804"] }
+     ] }
+   ```
+   Then rebuild: `pnpm inspiration board`. Families are lettered A, B, C... in the order
+   listed and tiles numbered within them (A1, A2, B1...); anything not listed lands in a
+   final "Unsorted" group.
+4. **Show the board and ask which families** the human likes (more than one is fine).
+   Open `inspiration/index.html` in a browser, or send a screenshot of it.
+5. **If a chosen family mixes styles, ask which tiles** within it ("B2, B5, not B3").
+   Fetch a second, narrower round if nothing in the family fits.
+6. **Build 2 to 3 directions from the picks**, and name the source tiles in each
+   direction's `sub` label, e.g. `--sub "Calm editorial (A1, A4)"`, so anyone reviewing
+   the tab bar can trace each direction back to what was liked.
+
+**The images are other people's copyrighted work.** They are for looking at during the
+session. Never commit `inspiration/`, never copy a reference image into a direction, and
+never trace one: match feel, not content (see `PROMPT_TEMPLATE.md`).
+
+## 5. Prompting for a direction
+
+Once the human has picked from the inspiration board (section 4), start from
+**[`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md)**: the actual fill-in-the-blanks
 prompt pattern (Aesthetic/Reference/Intent/Guardrails) plus a full worked example, not
 just the rules below. It also covers turning a filled-in prompt into registered
 directions via `scripts/new-direction.mjs`.
@@ -116,7 +162,7 @@ hand) to create one, the two rules that make the harness work are:
 5. **Check both themes.** Press `D` before calling a direction done — every color comes
    from a token, and every token has a light-theme value in `src/tokens.css`.
 
-## 5. Adding a new direction
+## 6. Adding a new direction
 
 ```bash
 node scripts/new-direction.mjs v2 --label "V2" --sub "Short description"
@@ -131,7 +177,7 @@ Then fill in `Page.tsx` per your prompt's Aesthetic/Placement (see
 [`PROMPT_TEMPLATE.md`](PROMPT_TEMPLATE.md)), binding every visual value to a
 `var(--token-name)` from `tokens.css`.
 
-## 6. Adding a screen to a direction
+## 7. Adding a screen to a direction
 
 If a direction is more than one view (e.g. a flow: Home → Detail → Settings), add
 screens beyond the default one:
@@ -146,7 +192,7 @@ sidebar appears on the left to switch between them — `↑`/`↓` move through 
 section 2). There's no routing/URL per screen — it's local component state in
 `App.tsx`, reset to the first screen whenever you switch directions.
 
-## 7. Tuning by eye
+## 8. Tuning by eye
 
 With a direction open (not grid view):
 
@@ -166,7 +212,7 @@ into dark. Colour and shadow-strength edits are therefore remembered separately 
 and re-applied when you press `D`; everything else (type, shape, motion) is shared. The
 theme you are currently editing is shown at the top of the panel.
 
-## 8. Generating supporting assets
+## 9. Generating supporting assets
 
 Image and video generation are invoked from the CLI, not the browser UI — see
 `README.md`'s "Image generation" / "Video generation" sections for commands and current
@@ -177,12 +223,12 @@ server, no per-image cost), or `openai` (paid). Video generation defaults
 to `manual` mode (no API call) and stays optional/opt-in per the constraint in
 `AGENTS.md`.
 
-## 9. Wrapping up a session
+## 10. Wrapping up a session
 
 There's no "export the whole app" step — a direction's `Page.tsx` plus the relevant
 slice of `tokens.css` *is* the deliverable. Once a direction is settled:
 
-- Make sure its final tuning has been copied into `tokens.css` (step 5).
+- Make sure its final tuning has been copied into `tokens.css` (section 8).
 - Hand off / reuse `Page.tsx` and the token values directly in the target project.
 
 ## Keyboard reference

@@ -3,6 +3,24 @@
 Format: version, date, then what changed and why (link a `DECISIONS.md` entry when one
 exists). Newest first.
 
+## 0.7.0 - 2026-11-01
+
+- **New step 0: inspiration before any direction.** New constraint in `AGENTS.md`
+  (mirrored in `CLAUDE.md` and `CONTRIBUTING.md`): no direction is built until the human
+  has seen an inspiration board and said which style families and tiles they like.
+  Directions are then built from those picks, each `sub` label naming its source tiles.
+- **New script: `scripts/inspiration/index.mjs`** (`pnpm inspiration`). `fetch` renders
+  Dribbble search pages for the given terms in local headless Chrome, downloads the
+  thumbnails in parallel with curl, optionally screenshots public design-system pages
+  (`--url`), and builds the board; `board` rebuilds it from `inspiration/families.json`,
+  where tiles are grouped into families and numbered A1, A2, B1... No new dependencies.
+- `inspiration/` is gitignored: the images are other people's copyrighted work, for
+  viewing during a session only.
+- `PROMPT_TEMPLATE.md` gains a "Step 0: Inspiration" section; `USAGE.md` gains section 4
+  (later sections renumbered, cross-references updated); `README.md` gains an
+  "Inspiration first" section.
+- See `DECISIONS.md` 2026-11-01 "Inspiration board before any direction".
+
 ## 0.6.1 — 2026-08-27
 
 - **New constraint: no generation without asking.** An agent must ask the human before

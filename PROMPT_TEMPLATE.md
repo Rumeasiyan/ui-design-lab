@@ -1,7 +1,38 @@
 # Prompt template — starting a design session
 
 Copy the template below, fill in the four fields, hand it to an AI coding agent working
-in this repo (or use it as your own brief).
+in this repo (or use it as your own brief). But first, step 0.
+
+## Step 0: Inspiration (before writing any direction)
+
+Do not write directions from the brief alone. Directions built straight from a written
+brief tend to be rejected all at once; people recognise what they like far faster than
+they can describe it. Show references first:
+
+1. **Search terms from the product's domain and users**, not from style words: "patient
+   portal", "warehouse inventory", "government website", not "clean modern minimal".
+   Optionally a few public design-system pages that suit the audience.
+2. **Build the board:** `pnpm inspiration fetch "term one" "term two" --per-term 12
+   [--url https://...]`, then group about 30 tiles into **4 to 5 style families** in
+   `inspiration/families.json` and run `pnpm inspiration board`. Tiles are numbered by
+   family: A1, A2, B1, B3...
+3. **Ask which families** the human likes (several may be chosen).
+4. **Ask which tiles** within a chosen family when the family mixes styles.
+5. **Build 2 to 3 directions from the picks.** Each direction's `sub` label names the
+   tiles it came from, e.g. `--sub "Calm editorial (A1, A4)"`, and its `Reference:` line
+   below points at those tiles.
+
+Full walkthrough: `USAGE.md` section 4. The board's images are other people's work:
+match their feel, never copy them into a direction, and never commit `inspiration/`.
+
+An agent's first message of a session therefore looks like this:
+
+```text
+Before I design anything, here are 32 references grouped into 5 families:
+open inspiration/index.html. Which families do you like (pick any)?
+A Calm editorial, B Dense operational, C Friendly illustrated, D Civic and formal,
+E Dark data. If one you pick mixes styles, I'll ask which tiles next.
+```
 
 ## The pattern
 
@@ -16,8 +47,8 @@ Guardrails: always [constants]. Never [bans].
   B&W") plus 5-8 concrete vocabulary terms, not vibes. "Clean and modern" is not a
   vocabulary term; "topographic line illustration, mono data callouts, film-strip ticks"
   is.
-- **Reference** — a real screenshot or image, with an explicit instruction to match
-  *feel*, not content. Without this line an agent will often copy the reference's literal
+- **Reference**: the board tiles the human picked in step 0 (e.g. "A1, A4"), or another
+  real screenshot or image, with an explicit instruction to match *feel*, not content. Without this line an agent will often copy the reference's literal
   subject matter instead of its visual language.
 - **Intent** — the emotional/functional goal, tied to a real outcome ("a founder should
   think X within 3 seconds"), not just an adjective.
@@ -97,17 +128,18 @@ italic emphasis word, white ground with thin orbit lines, blue pill CTA, trust l
 
 ## Turning a filled-in prompt into this harness's directions
 
-1. Fill in the template above with your project's specifics.
-2. For each direction block, run:
+1. Run step 0 and get the human's picks; build 2 to 3 directions from them.
+2. Fill in the template above with your project's specifics.
+3. For each direction block, run:
    ```bash
-   node scripts/new-direction.mjs v1 --label "V1" --sub "Print-Tech Paper"
+   node scripts/new-direction.mjs v1 --label "V1" --sub "Print-Tech Paper (A1, A4)"
    ```
    (creates `src/directions/v1/Page.tsx` and registers it in `src/lib/directions.ts` —
    see `scripts/new-direction.mjs --help`.)
-3. Fill in each `Page.tsx` per its Aesthetic/Placement, binding every visual value to a
+4. Fill in each `Page.tsx` per its Aesthetic/Placement, binding every visual value to a
    `var(--token-name)` from `src/tokens.css` (add new tokens if a direction needs a
-   value not yet tunable — see `USAGE.md` section 3).
-4. For hero imagery, use `scripts/imagegen/index.mjs` — **ask the human before running
+   value not yet tunable; see `USAGE.md` section 5).
+5. For hero imagery, use `scripts/imagegen/index.mjs`: **ask the human before running
    it**, whichever provider is configured; it spends a subscription, an API balance, or
    GPU time. If `IMAGE_GEN_BASE_URL` is needed and unset, ask for the address rather than
    probing for it. Also state the direction's motion decision explicitly, built from

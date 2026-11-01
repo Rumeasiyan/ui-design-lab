@@ -3,7 +3,7 @@
   Scaffolds a new direction: creates src/directions/<id>/Page.tsx (registered as its
   "home" screen) and registers the direction in src/lib/directions.ts, so adding a
   direction is one command instead of the manual mkdir + touch + hand-edit-the-registry
-  flow described in USAGE.md section 4. To add more screens to a direction afterward,
+  flow described in USAGE.md section 6. To add more screens to a direction afterward,
   use scripts/new-screen.mjs.
 
   Usage:

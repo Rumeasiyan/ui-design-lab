@@ -28,3 +28,6 @@ dist-ssr
 
 # generated output from imagegen/videogen scripts
 output/
+
+# inspiration boards: other people's copyrighted work, look but never commit
+/inspiration/
