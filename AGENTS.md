@@ -125,7 +125,9 @@ the notes.
   provider.** Propose the prompts, the target paths and the provider you intend to use,
   then wait for a yes. One confirmation covers one stated batch ("these four assets") —
   it is not standing approval for the session, and it never carries over to a different
-  provider. Why: every provider costs the human something they can see on a bill or a
+  provider. Once you have that yes, run `scripts/imagegen/index.mjs` with `--approved`:
+  `codex` runs inside this project, reads this same rule, and otherwise stops to ask and
+  saves nothing. Never pass `--approved` without a recorded yes. Why: every provider costs the human something they can see on a bill or a
   machine. `codex` spends their ChatGPT Plus session, `openai` spends per image, and even
   `local` occupies their GPU for minutes at a time. An agent that reads "imagery is
   required" and starts generating has spent someone else's money to satisfy a doc.
@@ -218,7 +220,7 @@ No test suite exists yet.
 
 - Canonical source: `package.json` `version` field. No separate build number (this is a
   web app served/built via Vite, not a platform with its own build-number concept).
-- Current version: `0.7.0` (pre-1.0, template still stabilizing; see open `unverified`
+- Current version: `0.7.1` (pre-1.0, template still stabilizing; see open `unverified`
   issues).
 - Update **per completed change** (not batched at release time), per semver:
   - Breaking change to the harness (e.g. token-shape change that breaks existing

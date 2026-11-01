@@ -141,7 +141,8 @@ italic emphasis word, white ground with thin orbit lines, blue pill CTA, trust l
    value not yet tunable; see `USAGE.md` section 5).
 5. For hero imagery, use `scripts/imagegen/index.mjs`: **ask the human before running
    it**, whichever provider is configured; it spends a subscription, an API balance, or
-   GPU time. If `IMAGE_GEN_BASE_URL` is needed and unset, ask for the address rather than
+   GPU time. After the human's yes to that batch, pass `--approved` (without it the
+   `codex` provider stops to ask and saves nothing). If `IMAGE_GEN_BASE_URL` is needed and unset, ask for the address rather than
    probing for it. Also state the direction's motion decision explicitly, built from
    `--motion-duration` / `--motion-ease` / `--reveal-distance` and gated by `--motion-on` (or the manual/video-API paths in
    `scripts/videogen/`) per direction's described visual.

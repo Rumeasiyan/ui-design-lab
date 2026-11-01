@@ -217,7 +217,9 @@ theme you are currently editing is shown at the top of the panel.
 Image and video generation are invoked from the CLI, not the browser UI — see
 `README.md`'s "Image generation" / "Video generation" sections for commands and current
 verification status. **A direction is not done until it carries real imagery** — not merely "no placeholders",
-but no quietly avoiding images either. Generate them with `scripts/imagegen/index.mjs`.
+but no quietly avoiding images either. Generate them with `scripts/imagegen/index.mjs`,
+adding `--approved` once you have said yes to the batch (the `codex` provider otherwise
+stops to ask and saves nothing).
 Pick a provider in `.env`: `codex` (default, no API key), `local` (your own generation
 server, no per-image cost), or `openai` (paid). Video generation defaults
 to `manual` mode (no API call) and stays optional/opt-in per the constraint in

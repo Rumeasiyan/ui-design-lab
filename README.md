@@ -198,8 +198,13 @@ Three things are equally forbidden: a grey placeholder box, a stock photo, and a
 quietly avoids imagery so it never has to source any.
 
 ```bash
-node scripts/imagegen/index.mjs "a topographic contour-line illustration in dark-green ink" src/directions/v1/hero.png
+node scripts/imagegen/index.mjs "a topographic contour-line illustration in dark-green ink" src/directions/v1/hero.png --approved
 ```
+
+`--approved` says you (the human) have said yes to this exact batch. The `codex` provider
+runs inside this project and reads its "never generate without asking" rule, so without
+the flag it stops to ask for confirmation and saves nothing; the script then fails with an
+error naming the flag. An agent passes it only after your recorded yes.
 
 **If an AI agent is doing the work, it must ask you before running this** — for every
 provider, not just the paid one. `codex` spends your ChatGPT Plus session, `openai` bills

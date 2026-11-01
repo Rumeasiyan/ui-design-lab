@@ -3,6 +3,17 @@
 Format: version, date, then what changed and why (link a `DECISIONS.md` entry when one
 exists). Newest first.
 
+## 0.7.1 - 2026-11-01
+
+- **Fix: `codex` generation saved nothing.** The `codex` provider runs `codex exec` inside
+  the project, where `AGENTS.md` says never generate without asking the human, so codex
+  answered "please confirm" and the script failed with "codex reported success but ...
+  does not exist". New flag `--approved` on `scripts/imagegen/index.mjs`: the codex
+  prompt then states that the human approved this exact batch. Pass it only with a
+  recorded yes from the human. Without the flag nothing changes, except that the error
+  now says codex probably stopped to ask and names `--approved`. Other providers ignore
+  the flag. Documented in `AGENTS.md`, `README.md`, `PROMPT_TEMPLATE.md` and `USAGE.md`.
+
 ## 0.7.0 - 2026-11-01
 
 - **New step 0: inspiration before any direction.** New constraint in `AGENTS.md`
